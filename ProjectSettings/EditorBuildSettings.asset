@@ -11,10 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Sprites/Scenes/1_Login.unity
     guid: 7ea268406caf01041afc8f390c739511
-  - enabled: 1
+  - enabled: 0
     path: Assets/Sprites/Scenes/2_MainMenu.unity
     guid: 8fc9ef9297c14b44e9e59edd02901984
-  - enabled: 1
+  - enabled: 0
     path: Assets/Sprites/Scenes/3_JuegoObstaculos.unity
     guid: d1586242212713240b99cb09e9ff155d
   - enabled: 1
@@ -23,7 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Sprites/Scenes/5_JuegoDebbuging.unity
     guid: 73d76a12929a06841b08dcc5946ec21d
-  - enabled: 1
+  - enabled: 0
     path: Assets/Sprites/Scenes/6_JuegoRebufo.unity
     guid: 14b5ff86b7f48644886ec7dc3502e2b2
   m_configObjects:
