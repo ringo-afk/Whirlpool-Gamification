@@ -11,6 +11,7 @@
         [SerializeField] private float accel = 15f;
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private float friction = 0.9f;
+        private float groundMult = 1f;
         [SerializeField] private float grip = 3f;
         [SerializeField] private float driftQuotient = 2f;
         [SerializeField] private float turnSpeed = 120f;
@@ -18,11 +19,15 @@
         void Start()
         {
             transform.eulerAngles = new Vector3(0,0,270);
+            groundMult = 1f;
+
         }
 
         // Update is called once per frame
         void Update()
         {
+            if(Time.deltaTime == 0) return;
+            rb.angularVelocity *= 0.9f;
             //float velocityAngle = Mathf.Rad2Deg*(Mathf.Deg2Rad*450 + (float)Math.Atan2(-rb.linearVelocityX,rb.linearVelocityY)) % (Mathf.PI * 2);
             if(Vector2.Dot(rb.linearVelocity.normalized, transform.up) < 0)
         {
@@ -36,13 +41,13 @@
             {
                 rb.linearVelocityX *= Mathf.Lerp(0.998f,0.998f-(0.998f-friction)/driftQuotient,Mathf.Abs(Vector2.Dot(rb.linearVelocity.normalized, transform.right)));
                 rb.linearVelocityY *= Mathf.Lerp(0.998f,0.998f-(0.998f-friction)/driftQuotient,Mathf.Abs(Vector2.Dot(rb.linearVelocity.normalized, transform.right)));
-                rb.linearVelocity = Vector2.Lerp(rb.linearVelocity.normalized, transform.up*directionMult, (grip/driftQuotient)*Time.deltaTime).normalized * rb.linearVelocity.magnitude;
+                rb.linearVelocity = Vector2.Lerp(rb.linearVelocity.normalized, transform.up*directionMult, (grip/driftQuotient) * groundMult *Time.deltaTime).normalized * rb.linearVelocity.magnitude;
             }
             else
             {
                 rb.linearVelocityX *= Mathf.Lerp(0.998f,friction,Mathf.Abs(Vector2.Dot(rb.linearVelocity.normalized, transform.right)));
                 rb.linearVelocityY *= Mathf.Lerp(0.998f,friction,Mathf.Abs(Vector2.Dot(rb.linearVelocity.normalized, transform.right)));
-                rb.linearVelocity = Vector2.Lerp(rb.linearVelocity.normalized, transform.up*directionMult, grip*Time.deltaTime).normalized * rb.linearVelocity.magnitude;
+                rb.linearVelocity = Vector2.Lerp(rb.linearVelocity.normalized, transform.up*directionMult, grip * groundMult *Time.deltaTime).normalized * rb.linearVelocity.magnitude;
             }
             
 
@@ -51,7 +56,7 @@
             {
                 //rb.linearVelocityX += (float)(accel*Math.Cos((Math.PI / 180) * (90 + transform.eulerAngles.z)));
                 //rb.linearVelocityY += (float)(accel*Math.Sin((Math.PI / 180) * (90 + transform.eulerAngles.z)));
-                rb.linearVelocity += (Vector2)transform.up * accel * Time.deltaTime;
+                rb.linearVelocity += (Vector2)transform.up * accel * groundMult * Time.deltaTime;
             }
             if (Keyboard.current.leftArrowKey.isPressed)
             {
@@ -74,7 +79,23 @@
                     rb.linearVelocityX -= (float)((accel/3)*Math.Cos((Math.PI / 180) * (90 + transform.eulerAngles.z)));
                     rb.linearVelocityY -= (float)((accel/3)*Math.Sin((Math.PI / 180) * (90 + transform.eulerAngles.z)));
                 }*/
-                rb.linearVelocity -= (Vector2)transform.up * (accel/3) * Time.deltaTime;
+                rb.linearVelocity -= (Vector2)transform.up * (accel * groundMult/3) * Time.deltaTime;
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            if (collision.gameObject.CompareTag("Normal Road"))
+            {
+                groundMult = 0.4f;
+            }
+        }
+
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            if (collision.gameObject.CompareTag("Normal Road"))
+            {
+                groundMult = 1f;
             }
         }
     }
