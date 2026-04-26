@@ -6,7 +6,9 @@ TagManager:
   tags:
   - Normal Road
   - Building
-  - Offroad 1
+  - Boost
+  - coin
+  - Water
   layers:
   - Default
   - TransparentFX

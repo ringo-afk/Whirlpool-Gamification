@@ -91,6 +91,14 @@
             }
         }
 
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.gameObject.CompareTag("Boost"))
+            {
+                rb.linearVelocity += (Vector2)transform.up.normalized * 10;
+            }
+        }
+
         private void OnTriggerStay2D(Collider2D collision)
         {
             if (collision.gameObject.CompareTag("Normal Road"))
