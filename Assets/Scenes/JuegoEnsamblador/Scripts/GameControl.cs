@@ -4,11 +4,16 @@ using UnityEngine.InputSystem;
 
 public class GameControl : MonoBehaviour
 {
+    private const string TimeToLoseKey = "TimeToLose";
+    private const string TimeIngameKey = "TimeIngame";
+    private const string ResumeFromPauseKey = "ResumeFromPause";
+
     public int timeToLose = 60;
     static public GameControl Instance;
     public UIController UIController;
     public QTEButton QteButton;
     private Coroutine timerCoroutine;
+    public int timeIngame;
 
 
     public void Awake()
@@ -24,7 +29,19 @@ public class GameControl : MonoBehaviour
         }
 
         StopAllCoroutines();
-        timeToLose = PlayerPrefs.GetInt("TimeToLose", timeToLose);
+
+        bool shouldResumeFromPause = PlayerPrefs.GetInt(ResumeFromPauseKey, 0) == 1;
+        if (shouldResumeFromPause)
+        {
+            timeToLose = PlayerPrefs.GetInt(TimeToLoseKey, timeToLose);
+            PlayerPrefs.SetInt(ResumeFromPauseKey, 0);
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            // Fresh start: honor inspector value and clear stale saved timer.
+            PlayerPrefs.DeleteKey(TimeToLoseKey);
+        }
     }
 
     void SetReferences()
@@ -74,17 +91,34 @@ public class GameControl : MonoBehaviour
 
     void PauseGame()
     {
-        PlayerPrefs.SetInt("TimeToLose", timeToLose);
+        PlayerPrefs.SetInt(TimeToLoseKey, timeToLose);
+        PlayerPrefs.SetInt(TimeIngameKey, timeIngame);
+        PlayerPrefs.SetInt(ResumeFromPauseKey, 1);
         PlayerPrefs.Save();
         Time.timeScale = 0f;
         SceneManager.LoadScene("Pausado");
     }
 
+    public void RefreshTimerDisplay()
+    {
+        if (UIController != null)
+        {
+            UIController.UpdateTimerText(timeToLose);
+        }
+    }
+
     System.Collections.IEnumerator MatchTime()
     {
+        timeIngame = 0;
+        if (UIController != null)
+        {
+            UIController.UpdateTimerText(timeToLose);
+        }
+
         while (timeToLose > 0)
         {
             yield return new WaitForSeconds(1f);
+            timeIngame++;
             timeToLose--;
 
             if (UIController != null)
@@ -93,6 +127,9 @@ public class GameControl : MonoBehaviour
             }
         }
 
+        PlayerPrefs.SetInt(TimeIngameKey, timeIngame);
+        PlayerPrefs.SetInt(ResumeFromPauseKey, 0);
+        PlayerPrefs.Save();
         SceneManager.LoadScene("EscenaFinal");
     }
 }
