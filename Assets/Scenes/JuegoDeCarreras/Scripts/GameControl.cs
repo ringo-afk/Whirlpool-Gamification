@@ -1,16 +1,40 @@
 using System;
-using UnityEditor;
+using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class GameControl : MonoBehaviour
 {
+    static public GameControl Instance;
     [SerializeField] private GameObject botonPausa;
     [SerializeField] private GameObject panelPausa;
+    public TextMeshProUGUI textLaps;
+    [NonSerialized] public int monedas;
+    public float tiempoInicio;
+    public SFXManager sfxManager;
+    public UIController uiController;
+    public Timer timer;
+    [NonSerialized] public FinishLine finishLine;
+    [NonSerialized] public Checkpoint checkpoints;
+    public LapsText lapsText;
+    [NonSerialized] public int Laps;
+    public int TotalLaps;
+    [NonSerialized] public int checkpointsInt;
+    public int checkpointsNeeded;
+    
+
+    void Awake()
+    {
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     void Start()
     {
         panelPausa.SetActive(false);
+        Pause(false);
+        Instance.monedas = 0;
     }
 
     public void Pause(bool pause)
@@ -27,6 +51,16 @@ public class NewMonoBehaviourScript : MonoBehaviour
         }
         Debug.Log(Time.timeScale);
         
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene("Circuito1");
+    }
+
+    public void Menu()
+    {
+        SceneManager.LoadScene("MenuCarreras");
     }
 
     // Update is called once per frame

@@ -1,0 +1,832 @@
+fileFormatVersion: 2
+guid: f596580b86a885247bb46b05dbf79c23
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4217720566245405012
+    second: CyberRace title_0
+  - first:
+      213: -6061902545350476673
+    second: CyberRace title_1
+  - first:
+      213: -906297943269435726
+    second: CyberRace title_2
+  - first:
+      213: 4212822569602178781
+    second: CyberRace title_3
+  - first:
+      213: 4467826450274006090
+    second: CyberRace title_4
+  - first:
+      213: -8703894011618204439
+    second: CyberRace title_5
+  - first:
+      213: -6562630841092420487
+    second: CyberRace title_6
+  - first:
+      213: -3861967099116531423
+    second: CyberRace title_7
+  - first:
+      213: 7785538954094979837
+    second: CyberRace title_8
+  - first:
+      213: -3664699019181408549
+    second: CyberRace title_9
+  - first:
+      213: -6812634208012126530
+    second: CyberRace title_10
+  - first:
+      213: -5161135058070220836
+    second: CyberRace title_11
+  - first:
+      213: 1146796263422655968
+    second: CyberRace title_12
+  - first:
+      213: 2120681381040094016
+    second: CyberRace title_13
+  - first:
+      213: 4896519633781940071
+    second: CyberRace title_14
+  - first:
+      213: 5409411078768412151
+    second: CyberRace title_15
+  - first:
+      213: -143137837193902364
+    second: CyberRace title_16
+  - first:
+      213: -705686418438752116
+    second: CyberRace title_17
+  - first:
+      213: -313257888672843846
+    second: CyberRace title_18
+  - first:
+      213: -409662017958297605
+    second: CyberRace title_19
+  - first:
+      213: -1211189792970595197
+    second: CyberRace title_20
+  - first:
+      213: 8157253455206891223
+    second: CyberRace title_21
+  - first:
+      213: 3907473351449842206
+    second: CyberRace title_22
+  - first:
+      213: 3221652678459156545
+    second: CyberRace title_23
+  - first:
+      213: 6322869320482338560
+    second: CyberRace title_24
+  - first:
+      213: 1550868519903597063
+    second: CyberRace title_25
+  - first:
+      213: 4271849500209029688
+    second: CyberRace title_26
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: CyberRace title_0
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 702
+        width: 77
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cae451fcd75a775c0800000000000000
+      internalID: -4217720566245405012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_1
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 732
+        width: 29
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7c395990cbcfdba0800000000000000
+      internalID: -6061902545350476673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_2
+      rect:
+        serializedVersion: 2
+        x: 221
+        y: 732
+        width: 85
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b612c682de2c63f0800000000000000
+      internalID: -906297943269435726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_3
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 742
+        width: 62
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dded2ea7ec3f67a30800000000000000
+      internalID: 4212822569602178781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_4
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 732
+        width: 53
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a443da62c78e00e30800000000000000
+      internalID: 4467826450274006090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_5
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 742
+        width: 29
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e4e8daf28e853780800000000000000
+      internalID: -8703894011618204439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_6
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 732
+        width: 214
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97cc9a4350adce4a0800000000000000
+      internalID: -6562630841092420487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_7
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 725
+        width: 30
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 121d9ea8269876ac0800000000000000
+      internalID: -3861967099116531423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_8
+      rect:
+        serializedVersion: 2
+        x: 716
+        y: 732
+        width: 312
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfa2ccfdd6acb0c60800000000000000
+      internalID: 7785538954094979837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_9
+      rect:
+        serializedVersion: 2
+        x: 1029
+        y: 727
+        width: 30
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bde38f098af542dc0800000000000000
+      internalID: -3664699019181408549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_10
+      rect:
+        serializedVersion: 2
+        x: 1069
+        y: 732
+        width: 142
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb633ce5849a471a0800000000000000
+      internalID: -6812634208012126530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_11
+      rect:
+        serializedVersion: 2
+        x: 1230
+        y: 725
+        width: 30
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cdfc8e17207ff58b0800000000000000
+      internalID: -5161135058070220836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_12
+      rect:
+        serializedVersion: 2
+        x: 1286
+        y: 732
+        width: 92
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ed7d07202d3aef00800000000000000
+      internalID: 1146796263422655968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_13
+      rect:
+        serializedVersion: 2
+        x: 1397
+        y: 725
+        width: 62
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04bfdaeea7c2e6d10800000000000000
+      internalID: 2120681381040094016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_14
+      rect:
+        serializedVersion: 2
+        x: 1474
+        y: 734
+        width: 105
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76f5c4ff9aee3f340800000000000000
+      internalID: 4896519633781940071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_15
+      rect:
+        serializedVersion: 2
+        x: 1581
+        y: 742
+        width: 45
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f5cd0247b6121b40800000000000000
+      internalID: 5409411078768412151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_16
+      rect:
+        serializedVersion: 2
+        x: 1629
+        y: 733
+        width: 30
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e6c32c35e8730ef0800000000000000
+      internalID: -143137837193902364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_17
+      rect:
+        serializedVersion: 2
+        x: 1661
+        y: 676
+        width: 158
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c88f32af0f5e436f0800000000000000
+      internalID: -705686418438752116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_18
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 646
+        width: 28
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab7f0962c9517abf0800000000000000
+      internalID: -313257888672843846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_19
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 286
+        width: 1646
+        height: 437
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bff30ada096905af0800000000000000
+      internalID: -409662017958297605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_20
+      rect:
+        serializedVersion: 2
+        x: 1806
+        y: 661
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 384a86aec4df03fe0800000000000000
+      internalID: -1211189792970595197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_21
+      rect:
+        serializedVersion: 2
+        x: 1789
+        y: 590
+        width: 47
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7de3f6c6cc2643170800000000000000
+      internalID: 8157253455206891223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_22
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 477
+        width: 30
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e12197a7f422a3630800000000000000
+      internalID: 3907473351449842206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_23
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 445
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1486e31ca0c95bc20800000000000000
+      internalID: 3221652678459156545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_24
+      rect:
+        serializedVersion: 2
+        x: 1821
+        y: 445
+        width: 15
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 007b090a5285fb750800000000000000
+      internalID: 6322869320482338560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_25
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 382
+        width: 93
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7029036b3bac58510800000000000000
+      internalID: 1550868519903597063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CyberRace title_26
+      rect:
+        serializedVersion: 2
+        x: 1781
+        y: 350
+        width: 62
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 832a3e9bc78a84b30800000000000000
+      internalID: 4271849500209029688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      CyberRace title_0: -4217720566245405012
+      CyberRace title_1: -6061902545350476673
+      CyberRace title_10: -6812634208012126530
+      CyberRace title_11: -5161135058070220836
+      CyberRace title_12: 1146796263422655968
+      CyberRace title_13: 2120681381040094016
+      CyberRace title_14: 4896519633781940071
+      CyberRace title_15: 5409411078768412151
+      CyberRace title_16: -143137837193902364
+      CyberRace title_17: -705686418438752116
+      CyberRace title_18: -313257888672843846
+      CyberRace title_19: -409662017958297605
+      CyberRace title_2: -906297943269435726
+      CyberRace title_20: -1211189792970595197
+      CyberRace title_21: 8157253455206891223
+      CyberRace title_22: 3907473351449842206
+      CyberRace title_23: 3221652678459156545
+      CyberRace title_24: 6322869320482338560
+      CyberRace title_25: 1550868519903597063
+      CyberRace title_26: 4271849500209029688
+      CyberRace title_3: 4212822569602178781
+      CyberRace title_4: 4467826450274006090
+      CyberRace title_5: -8703894011618204439
+      CyberRace title_6: -6562630841092420487
+      CyberRace title_7: -3861967099116531423
+      CyberRace title_8: 7785538954094979837
+      CyberRace title_9: -3664699019181408549
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
