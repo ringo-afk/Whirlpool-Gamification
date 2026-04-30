@@ -13,6 +13,9 @@ TagManager:
   - Rol
   - Contexto
   - Tarea
+  - Obstacle
+  - Item
+  - Bullet
   layers:
   - Default
   - TransparentFX

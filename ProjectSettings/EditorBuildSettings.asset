@@ -38,8 +38,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/JuegoDeCarreras/Ganaste.unity
     guid: cda26acdec0a83a44a16acb80c0e6bd9
-    path: Assets/Scenes/JuegoEnsamblador/Reglas.unity
-    guid: 4b8d1c9a7a654814f87976ed305495c9
   - enabled: 1
     path: Assets/Scenes/JuegoEnsamblador/Pausado.unity
     guid: b4d8ded91c34c854bb9b894137f99028
@@ -52,5 +50,17 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/2_Menu.unity
     guid: db2f21a3bf9047d4e95d88b94ccc4f16
+  - enabled: 1
+    path: Assets/Scenes/JuegoObstaculos/MenuRoadRush.unity
+    guid: 044612fda70c39c4bb44dad79b236c43
+  - enabled: 1
+    path: Assets/Scenes/JuegoObstaculos/InstruccionesRoadRush.unity
+    guid: c5a6da6edf75f45058f412002a3a21d0
+  - enabled: 1
+    path: Assets/Scenes/JuegoObstaculos/GameSceneRoadRush.unity
+    guid: 8dd0734ba477a374da7aa06aea352df8
+  - enabled: 1
+    path: Assets/Scenes/JuegoObstaculos/EndSceneRoadRush.unity
+    guid: 622b6d7ec5e944ba6bfcffe8551a7f22
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

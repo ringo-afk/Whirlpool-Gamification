@@ -19,4 +19,10 @@ public class MainMenu : MonoBehaviour
     {
         howTo.SetActive(yes);
     }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene("2_Menu");
+        
+    }
 }

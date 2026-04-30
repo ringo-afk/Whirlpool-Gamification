@@ -427,8 +427,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 749043089}
   - {fileID: 1360692161}
+  - {fileID: 749043089}
   - {fileID: 262848840}
   - {fileID: 624162900}
   - {fileID: 1412676061}
@@ -2760,7 +2760,7 @@ GameObject:
   - component: {fileID: 568258255}
   m_Layer: 0
   m_Name: Spawner
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
