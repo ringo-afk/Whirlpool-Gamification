@@ -15,7 +15,6 @@ public class DraggableObstacle : MonoBehaviour
         qte = FindObjectOfType<QTEButton>();
     }
 
-    // Llamar desde DropObject cuando este bloque es dropeado en una caja
     public void OnPlacedInBox()
     {
         if (isPlacedInBox || qte == null) return;
@@ -25,8 +24,6 @@ public class DraggableObstacle : MonoBehaviour
         qte.timeLostOnWrongInput = originalPenalty + extraTimePenalty;
     }
 
-    // Llamar desde DropObject cuando este bloque es removido de la caja
-    // o cuando se destruye (al avanzar de ronda)
     public void OnRemovedFromBox()
     {
         if (!isPlacedInBox || qte == null) return;
@@ -37,7 +34,6 @@ public class DraggableObstacle : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Asegurarse de restaurar la penalización si el bloque es destruido
         OnRemovedFromBox();
     }
 }

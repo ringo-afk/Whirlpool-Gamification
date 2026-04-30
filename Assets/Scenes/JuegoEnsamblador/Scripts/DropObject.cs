@@ -70,7 +70,6 @@ public class DropObject : MonoBehaviour
             GameControl1.Instance.sfxManager.SnapSound();
         }
 
-        // Activar penalización extra si es obstáculo
         DraggableObstacle obstacle = droppedObject.GetComponent<DraggableObstacle>();
         if (obstacle != null)
         {
@@ -94,7 +93,7 @@ public class DropObject : MonoBehaviour
 
     private IEnumerator NotifyFilledNextFrame()
 {
-    yield return null; // espera que Destroy procese
+    yield return null;
     OnDropFilled?.Invoke();
 }
 
@@ -116,8 +115,6 @@ public class DropObject : MonoBehaviour
     private void DeleteOtherDraggables(Draggable droppedObject)
     {
         if (droppedObject == null) return;
-
-        // We try to delete only the "set" of draggables that belongs to this interaction.
         Transform searchRoot = deleteOtherDraggablesInSameParent ? droppedObject.transform.parent : null;
 
         Draggable[] candidates;

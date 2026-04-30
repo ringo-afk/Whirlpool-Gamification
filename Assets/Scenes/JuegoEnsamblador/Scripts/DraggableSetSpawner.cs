@@ -22,7 +22,6 @@ public class DraggableSetSpawner : MonoBehaviour
     {
         if (draggablesRoot == null)
         {
-            // Default: keep everything under the spawner's GameObject.
             draggablesRoot = transform;
         }
     }
@@ -50,7 +49,7 @@ public class DraggableSetSpawner : MonoBehaviour
     {
         if (draggablesRoot == null) return;
 
-        // Destroying is deferred to end of frame, but calling it multiple times is safe.
+        
         Draggable[] existing = draggablesRoot.GetComponentsInChildren<Draggable>(true);
         for (int i = 0; i < existing.Length; i++)
         {
@@ -66,7 +65,6 @@ public class DraggableSetSpawner : MonoBehaviour
         if (spawnPoints == null || spawnPoints.Length == 0) return;
         if (draggablePrefabs == null || draggablePrefabs.Length == 0) return;
 
-        // Filter nulls once to avoid errors.
         List<Draggable> pool = new List<Draggable>(draggablePrefabs.Length);
         for (int i = 0; i < draggablePrefabs.Length; i++)
         {

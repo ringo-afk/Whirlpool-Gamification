@@ -3,9 +3,6 @@ using UnityEngine.InputSystem;
 
 public class Draggable : MonoBehaviour
 {
-    // Logical identifier used by DropObject to determine correctness.
-    // This is intentionally NOT Unity's built-in tag system (TagManager),
-    // so we can use values like "Contexto" and "Tarea" even if they are not defined as Unity tags.
     [SerializeField] public string choiceTag = "Rol";
     [SerializeField] public string answerId = "";
 

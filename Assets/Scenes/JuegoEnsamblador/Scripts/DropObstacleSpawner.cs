@@ -78,8 +78,6 @@ public class DropObstacleSpawner : MonoBehaviour
             ? Random.Range(minHitsToClear, maxHitsToClear + 1)
             : minHitsToClear;
 
-        // Instantiate without parent first, then re-parent while preserving world transform.
-        // This prevents parent scale from unexpectedly affecting obstacle size.
         DropObstacleClickable obstacleInstance =
             Instantiate(obstaclePrefab, spawnPos, spawnRot);
 

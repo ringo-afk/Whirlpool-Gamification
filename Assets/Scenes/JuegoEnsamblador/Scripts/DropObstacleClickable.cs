@@ -1,15 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Attach this to the obstacle prefab.
-/// While active it disables the target DropObject's Collider2D(s) so drags can't land there.
-/// </summary>
 public class DropObstacleClickable : MonoBehaviour
 {
     [SerializeField] private int hitsToClear = 3;
 
-    // If multiple obstacles overlap the same DropObject, we need ref-counting.
     private static readonly Dictionary<Collider2D, int> DisabledColliderCounts = new Dictionary<Collider2D, int>();
 
     private int currentHits;
@@ -24,9 +19,6 @@ public class DropObstacleClickable : MonoBehaviour
         currentHits = hitsToClear;
     }
 
-    /// <summary>
-    /// Called by the spawner right after Instantiate.
-    /// </summary>
     public void Init(DropObject dropTarget, int overrideHits, DropObstacleSpawner spawnerOwner)
     {
         blockedDropObject = dropTarget;
