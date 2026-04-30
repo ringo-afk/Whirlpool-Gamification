@@ -35,5 +35,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/JuegoEnsamblador/EscenaFinal.unity
     guid: c67075298a1b7fc4c9b73b4688e7356a
+  - enabled: 1
+    path: Assets/Scenes/2_Menu.unity
+    guid: db2f21a3bf9047d4e95d88b94ccc4f16
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

@@ -1,10 +1,12 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class EndGameController : MonoBehaviour
 {
     public TextMeshProUGUI timeIngameText;
     public TextMeshProUGUI correctAnswersText;
+    public TextMeshProUGUI scoreText;
 
     void Start()
     {
@@ -12,6 +14,7 @@ public class EndGameController : MonoBehaviour
         int correctSets = PlayerPrefs.GetInt(DropAnswerTracker.CorrectSetsKey, 0);
         int minutes = elapsedSeconds / 60;
         int seconds = elapsedSeconds % 60;
+        int score = (elapsedSeconds * 100) + (correctSets*100);
 
         if (timeIngameText != null)
         {
@@ -22,5 +25,16 @@ public class EndGameController : MonoBehaviour
         {
             correctAnswersText.text = correctSets.ToString();
         }
+
+        if (scoreText != null)
+        {
+            scoreText.text = score.ToString();
+        }
+        
+    }
+    
+    public void GoToMenu()
+    {
+        SceneManager.LoadScene("2_Menu");
     }
 }

@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
 
 public class DropObject : MonoBehaviour
 {
@@ -21,6 +23,8 @@ public class DropObject : MonoBehaviour
 
     [Tooltip("If false, inactive draggable objects will not be destroyed.")]
     [SerializeField] private bool destroyInactiveDraggables = false;
+
+    public event Action OnDropFilled;
 
     private void Awake()
     {
@@ -63,6 +67,14 @@ public class DropObject : MonoBehaviour
         if (snapDroppedObject)
         {
             droppedObject.transform.position = transform.position;
+            GameControl.Instance.sfxManager.SnapSound();
+        }
+
+        // Activar penalización extra si es obstáculo
+        DraggableObstacle obstacle = droppedObject.GetComponent<DraggableObstacle>();
+        if (obstacle != null)
+        {
+            obstacle.OnPlacedInBox();
         }
 
         if (deleteOtherDraggablesOnSuccess)
@@ -77,11 +89,28 @@ public class DropObject : MonoBehaviour
         }
 
         onDropped?.Invoke();
+        StartCoroutine(NotifyFilledNextFrame());
     }
+
+    private IEnumerator NotifyFilledNextFrame()
+{
+    yield return null; // espera que Destroy procese
+    OnDropFilled?.Invoke();
+}
 
     public bool IsCurrentlyCorrect()
     {
         return isCurrentlyCorrect;
+    }
+
+    public void SetRequiredAnswerId(string newRequiredAnswerId)
+    {
+        requiredAnswerId = newRequiredAnswerId ?? string.Empty;
+    }
+
+    public void ResetDropState()
+    {
+        isCurrentlyCorrect = false;
     }
 
     private void DeleteOtherDraggables(Draggable droppedObject)

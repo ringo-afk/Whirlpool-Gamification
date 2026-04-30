@@ -1,16 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System;
 
 public class DropAnswerTracker : MonoBehaviour
 {
     public const string CorrectSetsKey = "CorrectSetsCompleted";
+    
 
-    [Header("Round setup")]
-    [Tooltip("How many drop slots must be correct to count a full correct set.")]
     [SerializeField] private int requiredCorrectDrops = 3;
 
-    [Header("Progress")]
     [SerializeField] private int correctSetsCompleted;
     [SerializeField] private UnityEvent<int> onCorrectSetsChanged;
 
@@ -18,10 +17,12 @@ public class DropAnswerTracker : MonoBehaviour
     private bool roundAlreadyCounted;
 
     public int CorrectSetsCompleted => correctSetsCompleted;
+    public event Action RoundCompleted;
 
     private void Awake()
     {
-        correctSetsCompleted = PlayerPrefs.GetInt(CorrectSetsKey, 0);
+        correctSetsCompleted = 0;
+        SaveProgress();
     }
 
     public void RegisterDropObject(DropObject dropObject)
@@ -39,6 +40,11 @@ public class DropAnswerTracker : MonoBehaviour
     public void NotifyDropChanged()
     {
         EvaluateRound();
+    }
+
+    public void BeginNewRound()
+    {
+        roundAlreadyCounted = false;
     }
 
     public void ResetTracker()
@@ -69,6 +75,7 @@ public class DropAnswerTracker : MonoBehaviour
             roundAlreadyCounted = true;
             SaveProgress();
             onCorrectSetsChanged?.Invoke(correctSetsCompleted);
+            RoundCompleted?.Invoke();
         }
         else if (!allCorrect)
         {

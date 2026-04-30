@@ -41,6 +41,11 @@ public class DraggableSetSpawner : MonoBehaviour
         SpawnSet();
     }
 
+    public void SetDraggablePrefabs(Draggable[] newPrefabs)
+    {
+        draggablePrefabs = newPrefabs;
+    }
+
     private void ClearExistingDraggables()
     {
         if (draggablesRoot == null) return;

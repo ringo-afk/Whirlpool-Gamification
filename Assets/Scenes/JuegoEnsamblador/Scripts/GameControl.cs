@@ -13,6 +13,7 @@ public class GameControl : MonoBehaviour
     public UIController UIController;
     public QTEButton QteButton;
     private Coroutine timerCoroutine;
+    public SFXManager sfxManager;
     public int timeIngame;
 
 

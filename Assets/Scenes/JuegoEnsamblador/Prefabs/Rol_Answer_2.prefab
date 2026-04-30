@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.7166445, y: -0.3068015, z: 0}
-  m_LocalScale: {x: 0.61068064, y: 0.29800102, z: 0}
+  m_LocalScale: {x: 2.442709, y: 1.088479, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3657678787475677258}
@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Draggable
   choiceTag: Rol
+  answerId: 3
 --- !u!61 &2497217109397896372
 BoxCollider2D:
   m_ObjectHideFlags: 0
