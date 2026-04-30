@@ -14,8 +14,8 @@ public class MainMenu_Controller : MonoBehaviour
         SceneManager.LoadScene("MenuCarreras");
     }
 
-    public void JuegoEnsamblador()
+    public void JuegoEnsamblaje()
     {
-        SceneManager.LoadScene("JuegoEnsamblaje");
+        SceneManager.LoadScene("Reglas");
     }
 }
