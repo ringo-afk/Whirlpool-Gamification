@@ -5,8 +5,7 @@ using UnityEngine.InputSystem;
 public class PauseMenuController : MonoBehaviour
 {
     private const string ResumeFromPauseKey = "ResumeFromPause";
-
-    [SerializeField] private string gameplaySceneName = "JuegoEnsamblador";
+    [SerializeField] private string JuegoEnsamblaje;
 
     private void Update()
     {
@@ -20,6 +19,19 @@ public class PauseMenuController : MonoBehaviour
         {
             ResumeGame();
         }
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            SceneManager.LoadScene("JuegoEnsamblaje");
+        }
+    }
+    public void GoToMenu()
+    {
+        SceneManager.LoadScene("2_Menu");
+    }
+    public void resume()
+    {
+        SceneManager.LoadScene("JuegoEnsamblaje");
+        ResumeGame();
     }
 
     public void ResumeGame()
@@ -27,6 +39,6 @@ public class PauseMenuController : MonoBehaviour
         PlayerPrefs.SetInt(ResumeFromPauseKey, 1);
         PlayerPrefs.Save();
         Time.timeScale = 1f;
-        SceneManager.LoadScene(gameplaySceneName);
+        SceneManager.LoadScene("JuegoEnsamblaje");
     }
 }

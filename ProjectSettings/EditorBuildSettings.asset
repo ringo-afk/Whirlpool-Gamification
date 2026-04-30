@@ -27,6 +27,9 @@ EditorBuildSettings:
     path: Assets/Sprites/Scenes/6_JuegoRebufo.unity
     guid: 14b5ff86b7f48644886ec7dc3502e2b2
   - enabled: 1
+    path: Assets/Scenes/JuegoEnsamblador/Reglas.unity
+    guid: 4b8d1c9a7a654814f87976ed305495c9
+  - enabled: 1
     path: Assets/Scenes/JuegoEnsamblador/Pausado.unity
     guid: b4d8ded91c34c854bb9b894137f99028
   - enabled: 1
