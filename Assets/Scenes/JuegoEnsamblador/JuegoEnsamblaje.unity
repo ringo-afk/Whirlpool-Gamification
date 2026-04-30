@@ -1918,7 +1918,8 @@ MonoBehaviour:
     - {fileID: 198502924646465498, guid: 3bab9d2be75523a4886921a3a942b0bd, type: 3}
     - {fileID: 214667618269332009, guid: 9e645144164f6834e9c7f02313a67d08, type: 3}
     - {fileID: 198502924646465498, guid: 623be0941aec3e64fb217c16a304520f, type: 3}
-  - promptText: Esto es una prueba para ver, contesta lo mismo q antes
+  - promptText: "Necesitamos una campa\xF1a de email marketing para la nueva l\xEDnea
+      de lavadoras de carga frontal que ahorran agua."
     requiredAnswerIdsForBoxes:
     - 1
     - 5
