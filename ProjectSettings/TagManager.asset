@@ -4,6 +4,12 @@
 TagManager:
   serializedVersion: 3
   tags:
+  - Normal Road
+  - Building
+  - Boost
+  - coin
+  - Water
+  - Checkpoint
   - Rol
   - Contexto
   - Tarea
@@ -11,11 +17,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Deco
   - Water
   - UI
-  - 
-  - 
+  - Road
+  - Colliders
   - 
   - 
   - 
