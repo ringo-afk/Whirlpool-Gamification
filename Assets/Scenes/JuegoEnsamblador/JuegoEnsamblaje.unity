@@ -6791,8 +6791,8 @@ MonoBehaviour:
   dSprite: {fileID: 6739689133625958909, guid: 926b7d0a39bf83a4585398f7618f3a1a, type: 3}
   wrongIfClicked: 0
   CorrectIfCLicked: 0
-  minSecondsBetweenSpawns: 20
-  maxSecondsBetweenSpawns: 20
+  minSecondsBetweenSpawns: 5
+  maxSecondsBetweenSpawns: 10
   visibleSeconds: 4
   triggerWrongOnTimeout: 1
   timeLostOnWrongInput: 3
@@ -8797,6 +8797,7 @@ MonoBehaviour:
   snap: {fileID: 8300000, guid: e19b44aedcdc30841bc1f94123fa28b5, type: 3}
   virus: {fileID: 8300000, guid: ca92f4f1b6f74a344b602f38cc7243b2, type: 3}
   start: {fileID: 8300000, guid: c20e73793a564e14f93e0a0f9c74196e, type: 3}
+  QTE: {fileID: 8300000, guid: 87278a8ca7117f749a50cdeea5b490e2, type: 3}
 --- !u!4 &1795518060
 Transform:
   m_ObjectHideFlags: 0
@@ -8825,7 +8826,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 4e67c240c04bb4e4190f29c10977b851, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.673
+  m_Volume: 0.35
   m_Pitch: 1
   Loop: 0
   Mute: 0

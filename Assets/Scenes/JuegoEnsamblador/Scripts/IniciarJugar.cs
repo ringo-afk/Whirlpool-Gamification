@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 
 public class IniciarJugar : MonoBehaviour
 {
-     [SerializeField] private string JuegoEnsamblaje;
 
     void Update()
     {
