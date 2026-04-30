@@ -9,7 +9,7 @@ public class PowerUp_Behaviour : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            int randomPower = Random.Range(1, 2);
+            int randomPower = Random.Range(0, 2);
 
             if (randomPower == 0)
             {
