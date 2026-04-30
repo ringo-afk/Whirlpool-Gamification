@@ -1,6 +1,5 @@
 using UnityEngine;
 
-// Agregar este componente al prefab obstáculo junto con Draggable.
 public class DraggableObstacle : MonoBehaviour
 {
     [Tooltip("Penalización extra que se suma al timeLostOnWrongInput del QTE mientras este bloque esté en una caja")]

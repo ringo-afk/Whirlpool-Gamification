@@ -1,9 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-/// <summary>
-/// Spawns clickable obstacles over DropObjects at random intervals.
-/// </summary>
 public class DropObstacleSpawner : MonoBehaviour
 {
     [SerializeField] private DropObject[] dropTargets;
@@ -70,7 +67,6 @@ public class DropObstacleSpawner : MonoBehaviour
 
         Transform parent = obstaclesRoot != null ? obstaclesRoot : target.transform.parent;
 
-        // Spawn at the DropObject position (same "box" center).
         Vector3 spawnPos = target.transform.position + spawnPositionOffset;
         Quaternion spawnRot = target.transform.rotation;
 
