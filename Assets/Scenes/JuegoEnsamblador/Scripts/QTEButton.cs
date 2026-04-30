@@ -171,6 +171,7 @@ public class QTEButton : MonoBehaviour, IPointerDownHandler
 
         GameControl.Instance.timeToLose = Mathf.Max(0, GameControl.Instance.timeToLose - Mathf.Max(0, timeLostOnWrongInput));
         GameControl.Instance.RefreshTimerDisplay();
+        GameControl.Instance.sfxManager.QTESound();
     }
 
     private void ApplyCorrectInputReward()

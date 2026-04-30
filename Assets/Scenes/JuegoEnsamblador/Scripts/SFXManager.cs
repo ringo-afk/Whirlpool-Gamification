@@ -5,6 +5,7 @@ public class SFXManager : MonoBehaviour
     public AudioClip snap;
     public AudioClip virus;
     public AudioClip start;
+    public AudioClip QTE;
 
     public void SnapSound()
     {
@@ -18,6 +19,10 @@ public class SFXManager : MonoBehaviour
     public void StartSound()
     {
         AudioSource.PlayClipAtPoint(start, Camera.main.transform.position, 0.5f);
+    }
+    public void QTESound()
+    {
+        AudioSource.PlayClipAtPoint(QTE, Camera.main.transform.position, 0.5f);
     }
    
 }
