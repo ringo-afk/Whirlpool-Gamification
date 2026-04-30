@@ -3,18 +3,12 @@ using UnityEngine;
 
 public class DraggableSetSpawner : MonoBehaviour
 {
-    [Header("Spawn Points (exactly the amount you want to show)")]
     [SerializeField] private Transform[] spawnPoints;
 
-    [Header("Draggable Prefabs Pool")]
-    [Tooltip("These prefabs must already have the Unity tag(s) your DropObject accepts.")]
     [SerializeField] private Draggable[] draggablePrefabs;
 
-    [Header("Parent / Cleanup")]
-    [Tooltip("Where the spawned draggables will be parented and cleared from.")]
     [SerializeField] private Transform draggablesRoot;
 
-    [Header("Behavior")]
     [SerializeField] private bool avoidDuplicatesInSet = true;
     [SerializeField] private bool spawnOnStart = false;
 
