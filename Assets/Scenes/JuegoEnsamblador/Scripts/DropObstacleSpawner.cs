@@ -90,7 +90,7 @@ public class DropObstacleSpawner : MonoBehaviour
 
         obstacleInstance.Init(target, hits, this);
         
-        GameControl.Instance.sfxManager.VirusSound();
+        GameControl1.Instance.sfxManager.VirusSound();
         activeObstacles++;
         if (avoidMultipleOnSameBox)
         {

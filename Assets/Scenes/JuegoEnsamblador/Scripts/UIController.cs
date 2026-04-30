@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-public class UIController : MonoBehaviour
+public class UIController1 : MonoBehaviour
 {
     public TextMeshProUGUI timeText;
 

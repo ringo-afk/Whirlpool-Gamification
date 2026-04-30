@@ -67,7 +67,7 @@ public class DropObject : MonoBehaviour
         if (snapDroppedObject)
         {
             droppedObject.transform.position = transform.position;
-            GameControl.Instance.sfxManager.SnapSound();
+            GameControl1.Instance.sfxManager.SnapSound();
         }
 
         // Activar penalización extra si es obstáculo

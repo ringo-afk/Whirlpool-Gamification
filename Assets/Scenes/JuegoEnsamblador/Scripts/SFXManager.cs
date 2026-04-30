@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SFXManager : MonoBehaviour
+public class SFXManager1 : MonoBehaviour
 {
     public AudioClip snap;
     public AudioClip virus;

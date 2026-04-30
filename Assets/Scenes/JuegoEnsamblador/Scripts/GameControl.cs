@@ -2,18 +2,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
-public class GameControl : MonoBehaviour
+public class GameControl1 : MonoBehaviour
 {
     private const string TimeToLoseKey = "TimeToLose";
     private const string TimeIngameKey = "TimeIngame";
     private const string ResumeFromPauseKey = "ResumeFromPause";
 
     public int timeToLose = 60;
-    static public GameControl Instance;
-    public UIController UIController;
+    static public GameControl1 Instance;
+    public UIController1 UIController;
     public QTEButton QteButton;
     private Coroutine timerCoroutine;
-    public SFXManager sfxManager;
+    public SFXManager1 sfxManager;
     public int timeIngame;
 
 
@@ -49,7 +49,7 @@ public class GameControl : MonoBehaviour
     {
         if (UIController == null)
         {
-            UIController = FindAnyObjectByType<UIController>();
+            UIController = FindAnyObjectByType<UIController1>();
         }
 
         init();

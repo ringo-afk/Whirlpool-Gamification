@@ -169,9 +169,9 @@ public class QTEButton : MonoBehaviour, IPointerDownHandler
             return;
         }
 
-        GameControl.Instance.timeToLose = Mathf.Max(0, GameControl.Instance.timeToLose - Mathf.Max(0, timeLostOnWrongInput));
-        GameControl.Instance.RefreshTimerDisplay();
-        GameControl.Instance.sfxManager.QTESound();
+        GameControl1.Instance.timeToLose = Mathf.Max(0, GameControl1.Instance.timeToLose - Mathf.Max(0, timeLostOnWrongInput));
+        GameControl1.Instance.RefreshTimerDisplay();
+        GameControl1.Instance.sfxManager.QTESound();
     }
 
     private void ApplyCorrectInputReward()
@@ -181,8 +181,8 @@ public class QTEButton : MonoBehaviour, IPointerDownHandler
             return;
         }
 
-        GameControl.Instance.timeToLose = Mathf.Max(0, GameControl.Instance.timeToLose + Mathf.Max(0, timeWinOnCorrectInput));
-        GameControl.Instance.RefreshTimerDisplay();
+        GameControl1.Instance.timeToLose = Mathf.Max(0, GameControl1.Instance.timeToLose + Mathf.Max(0, timeWinOnCorrectInput));
+        GameControl1.Instance.RefreshTimerDisplay();
     }
 
     public void ShowQTE()
