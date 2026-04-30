@@ -10,6 +10,9 @@ TagManager:
   - coin
   - Water
   - Checkpoint
+  - Rol
+  - Contexto
+  - Tarea
   layers:
   - Default
   - TransparentFX

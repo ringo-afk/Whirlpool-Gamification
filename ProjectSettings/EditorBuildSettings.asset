@@ -38,5 +38,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/JuegoDeCarreras/Ganaste.unity
     guid: cda26acdec0a83a44a16acb80c0e6bd9
+    path: Assets/Scenes/JuegoEnsamblador/Reglas.unity
+    guid: 4b8d1c9a7a654814f87976ed305495c9
+  - enabled: 1
+    path: Assets/Scenes/JuegoEnsamblador/Pausado.unity
+    guid: b4d8ded91c34c854bb9b894137f99028
+  - enabled: 1
+    path: Assets/Scenes/JuegoEnsamblador/JuegoEnsamblaje.unity
+    guid: 6c974c2a4634aea42b5e222f139efaca
+  - enabled: 1
+    path: Assets/Scenes/JuegoEnsamblador/EscenaFinal.unity
+    guid: c67075298a1b7fc4c9b73b4688e7356a
+  - enabled: 1
+    path: Assets/Scenes/2_Menu.unity
+    guid: db2f21a3bf9047d4e95d88b94ccc4f16
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
