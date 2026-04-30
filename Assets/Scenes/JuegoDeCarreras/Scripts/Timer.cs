@@ -10,7 +10,6 @@ public class Timer : MonoBehaviour
         tiempo = GameControl.Instance.tiempoInicio;
     }
 
-    // Update is called once per frame
     void Update()
     {
         tiempo -= Time.deltaTime;

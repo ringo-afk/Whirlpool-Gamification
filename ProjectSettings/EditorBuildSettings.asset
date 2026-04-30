@@ -32,5 +32,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/JuegoDeCarreras/MenuCarreras.unity
     guid: e258d8e409e30874cae217a9e5fbe3ca
+  - enabled: 1
+    path: Assets/Scenes/JuegoDeCarreras/Garage.unity
+    guid: a31381ae1b993e84196a3ecbd670488b
+  - enabled: 1
+    path: Assets/Scenes/JuegoDeCarreras/Ganaste.unity
+    guid: cda26acdec0a83a44a16acb80c0e6bd9
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FinishLine : MonoBehaviour
 {
@@ -8,11 +9,11 @@ public class FinishLine : MonoBehaviour
         {
             if (GameControl.Instance.checkpointsInt >= GameControl.Instance.checkpointsNeeded)
             {
-                if (GameControl.Instance.Laps >= GameControl.Instance.TotalLaps)
+                if (GameControl.Instance.Laps+1 >= GameControl.Instance.TotalLaps)
                 {
                     PlayerPrefs.SetInt("Monedas", GameControl.Instance.monedas);
-                    PlayerPrefs.SetFloat("Tiempo", GameControl.Instance.tiempoInicio - GameControl.Instance.timer.tiempo);
-                    //escena de ganar
+                    //PlayerPrefs.SetFloat("Tiempo", GameControl.Instance.tiempoInicio - GameControl.Instance.timer.tiempo);
+                    SceneManager.LoadScene("Ganaste");
                 }
                 else
                 {
