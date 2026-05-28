@@ -7,7 +7,7 @@ public class BypassCertificate : CertificateHandler
 {
     protected override bool ValidateCertificate(byte[] certificateData)
     {
-        return true; 
+        return true;
     }
 }
 
@@ -26,7 +26,6 @@ public class TopList
 
 public class LeaderboardAPI : MonoBehaviour
 {
-    [Header("Arrastra aquí tu TextMeshPro")]
     public TextMeshProUGUI textoLeaderboard;
 
     void Start()
@@ -42,7 +41,7 @@ public class LeaderboardAPI : MonoBehaviour
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
             webRequest.certificateHandler = new BypassCertificate();
-            
+
             yield return webRequest.SendWebRequest();
 
             if (webRequest.result != UnityWebRequest.Result.Success)
@@ -52,12 +51,12 @@ public class LeaderboardAPI : MonoBehaviour
             else
             {
                 string jsonRespuesta = webRequest.downloadHandler.text;
-                
+
                 string wrappedJson = "{\"Items\":" + jsonRespuesta + "}";
                 TopList listaJugadores = JsonUtility.FromJson<TopList>(wrappedJson);
 
                 string textoFinal = "TOP 4 - CYBER MATCH\n--------------------\n";
-                
+
                 foreach (var jugador in listaJugadores.Items)
                 {
                     textoFinal += $"{jugador.Nombre} ........ {jugador.MejorPuntaje} pts\n";

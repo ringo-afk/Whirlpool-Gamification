@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
  Minijuego-debugging
@@ -25,6 +26,10 @@ public class MainMenu_Controller : MonoBehaviour
     public void DebuggingRace()
     {
         SceneManager.LoadScene("DebuggingRace_Instrucciones");
+    }
+    public void CyberMatch(){
+        SceneManager.LoadScene("JuegoMemoramaRediseño");
+
     }
 }
 

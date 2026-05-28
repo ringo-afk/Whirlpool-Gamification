@@ -5,14 +5,14 @@ using TMPro;
 public class CardVisual : MonoBehaviour
 {
     [Header("Referencias UI")]
-    public TextMeshProUGUI cardText;       
-    public Image cardImage;     
-    public Sprite backSprite;   
-    public Sprite frontSprite;  
+    public TextMeshProUGUI cardText;
+    public Image cardImage;
+    public Sprite backSprite;
+    public Sprite frontSprite;
 
     [HideInInspector] public CardData cardData;
     public bool isFlipped = false;
-    
+
     private GameManager gameManager;
     private Button buttonComponent;
 
@@ -20,7 +20,7 @@ public class CardVisual : MonoBehaviour
     {
         cardData = data;
         gameManager = gm;
-        
+
         buttonComponent = GetComponent<Button>();
 
         cardText.text = cardData.cardText;
@@ -35,11 +35,9 @@ public class CardVisual : MonoBehaviour
     {
         if (isFlipped || !gameManager.canPlayerPlay) return;
 
-        // Avisar al cerebro, él decidirá cuándo voltearla y animarla
-        gameManager.CardRevealed(this); 
+        gameManager.CardRevealed(this);
     }
 
-    // Solo se dedica a cambiar el sprite y el texto, nada de movimiento
     public void FlipCard()
     {
         isFlipped = true;
