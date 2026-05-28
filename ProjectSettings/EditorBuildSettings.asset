@@ -62,5 +62,20 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/JuegoObstaculos/EndSceneRoadRush.unity
     guid: 622b6d7ec5e944ba6bfcffe8551a7f22
+  - enabled: 1
+    path: "Assets/Scenes/JuegoMemorama/JuegoMemoramaRedise\xF1o.unity"
+    guid: 3b6baa9ff767130418818fa3a6a9cd5b
+  - enabled: 1
+    path: Assets/Scenes/JuegoMemorama/Pantalla_Instrucciones.unity
+    guid: 544d11af9392c5b43836ed63add03d3a
+  - enabled: 1
+    path: Assets/Scenes/JuegoMemorama/Pausa.unity
+    guid: f61728e4e624efc4f81a51b2f29d6e30
+  - enabled: 1
+    path: Assets/Scenes/JuegoMemorama/Pantalla_Perdiste.unity
+    guid: 59ab7e7ea574e5643ab659f898f0662c
+  - enabled: 1
+    path: Assets/Scenes/JuegoMemorama/Pantalla_Fin.unity
+    guid: 9db3d985c60a80e4cb2b920acb546a83
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

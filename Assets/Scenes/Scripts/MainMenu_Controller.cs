@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,5 +18,9 @@ public class MainMenu_Controller : MonoBehaviour
     public void JuegoEnsamblaje()
     {
         SceneManager.LoadScene("Reglas");
+    }
+    public void CyberMatch(){
+        SceneManager.LoadScene("JuegoMemoramaRediseño");
+
     }
 }

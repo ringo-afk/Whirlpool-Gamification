@@ -3,53 +3,195 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    #region Variables y UI
     [Header("Configuración del Tablero")]
     public GameObject cardPrefab;
     public Transform boardPanel;
-    
+
+    [Header("Efectos de Sonido")]
+    public AudioSource reproductorSFX; // Conecta el segundo AudioSource aquí
+    public AudioClip sonidoVoltearCarta;
+    public AudioClip sonidoBoton;
+
     [Header("Base de Datos Interna")]
-    public List<CardData> allAvailablePairs = new List<CardData>(); 
+    public List<CardData> allAvailablePairs = new List<CardData>();
     private List<CardData> deckInPlay = new List<CardData>();
     private List<CardVisual> allCardsOnBoard = new List<CardVisual>();
-    
+
     [Header("Funcionalidad 3: Memoria del Robot")]
     public List<CardVisual> memoriaRobot = new List<CardVisual>();
-    
+
     [Header("Funcionalidad 5: Economía y Poderes")]
-    public int energiaJugador = 5; 
-    public TextMeshProUGUI textoEnergia; 
-    public Button btnSaltarTurno;       
-    public Button btnCongelar;          
-    public Button btnRevolver;          
-    public int costoSaltar = 1;          
-    public int costoCongelar = 2;        
-    public int costoRevolver = 2;        
+    public int energiaJugador = 5;
+    public TextMeshProUGUI textoEnergia;
+    [Header("Textos del HUD")]
+    public TextMeshProUGUI textoDificultad;
+    [Header("Configuración del Tablero Dinámico")]
+    public GridLayoutGroup gridLayoutTablero;
+    public Button btnSaltarTurno;
+    public Button btnCongelar;
+    public Button btnRevolver;
+    public int costoSaltar = 1;
+    public int costoCongelar = 2;
+    public int costoRevolver = 2;
+
+    [Header("Control de Partida")]
+    private int paresEncontradosJugador = 0;
+    private int paresEncontradosBot = 0;
+    private int totalParesPosibles;
+    public float tiempoRestante = 0f;
+
+    [Header("Sistema de Tiempo y Pausa")]
+    public TextMeshProUGUI textoTiempoRestante;
+    public float tiempoDePartida = 60f;
+    public GameObject panelPausa;
+    private bool juegoActivo = false;
+
+    [Header("Selección de Dificultad")]
+    private int cartasSeleccionadas = 8;
+    private string nombreDificultad = "Fácil";
+
+    public UnityEngine.UI.Image imgBtnFacil;
+    public UnityEngine.UI.Image imgBtnMedio;
+    public UnityEngine.UI.Image imgBtnDificil;
+
+    public Color colorNoSeleccionado = Color.white;
+    public Color colorSeleccionado = Color.cyan;
+
+    [Header("Pantallas de Menú")]
+    public GameObject panelMenuInicio;
+    public GameObject panelInstrucciones;
+
     private bool saltarTurnoEnemigoActivo = false;
-    
+
     [Header("Efectos Visuales")]
-    public Image panelFondo; 
+    public Image panelFondo;
 
     [Header("Salón de la Fama (F4)")]
-    public Transform panelParesColumna; 
-    
-    public bool canPlayerPlay = true; 
-    
+    public Transform panelParesColumna;
+
+    public bool canPlayerPlay = true;
+
     [Header("Memoria del Tablero")]
     private CardVisual firstCardRevealed;
     private CardVisual secondCardRevealed;
 
+    #endregion
+
+    #region Inicio y Update
     void Start()
     {
-        GenerateBoard(8); 
-        ActualizarBotonesPoderes(); 
+        if (panelMenuInicio != null) panelMenuInicio.SetActive(true);
+        if (panelInstrucciones != null) panelInstrucciones.SetActive(false);
+        if (panelPausa != null) panelPausa.SetActive(false);
     }
+
+    void Update()
+    {
+        if (juegoActivo && tiempoDePartida > 0f)
+        {
+            tiempoDePartida -= Time.deltaTime;
+
+            int minutos = Mathf.FloorToInt(tiempoDePartida / 60);
+            int segundos = Mathf.FloorToInt(tiempoDePartida % 60);
+            if (textoTiempoRestante != null) textoTiempoRestante.text = string.Format("Tiempo: {0:00}:{1:00}", minutos, segundos);
+
+            if (tiempoDePartida <= 0f)
+            {
+                tiempoDePartida = 0f;
+                juegoActivo = false;
+                RevisarFinDeJuego(true);
+            }
+        }
+    }
+    #endregion
+
+    public void SeleccionarFacil()
+    {
+        cartasSeleccionadas = 8;
+        nombreDificultad = "Fácil";
+        ActualizarColoresBotones();
+    }
+
+    public void SeleccionarMedio()
+    {
+        cartasSeleccionadas = 12;
+        nombreDificultad = "Medio";
+        ActualizarColoresBotones();
+    }
+
+    public void SeleccionarDificil()
+    {
+        cartasSeleccionadas = 16;
+        nombreDificultad = "Difícil";
+        ActualizarColoresBotones();
+    }
+
+    private void ActualizarColoresBotones()
+    {
+        if (imgBtnFacil != null) imgBtnFacil.color = (cartasSeleccionadas == 8) ? colorSeleccionado : colorNoSeleccionado;
+        if (imgBtnMedio != null) imgBtnMedio.color = (cartasSeleccionadas == 12) ? colorSeleccionado : colorNoSeleccionado;
+        if (imgBtnDificil != null) imgBtnDificil.color = (cartasSeleccionadas == 16) ? colorSeleccionado : colorNoSeleccionado;
+    }
+
+    public void BotonJugar()
+    {
+        if (panelMenuInicio != null) panelMenuInicio.SetActive(false);
+
+        if (textoDificultad != null)
+        {
+            textoDificultad.text = "Nivel: " + nombreDificultad;
+        }
+
+        if (gridLayoutTablero != null)
+        {
+            if (cartasSeleccionadas == 8)
+            {
+                gridLayoutTablero.cellSize = new Vector2(95f, 120f);
+            }
+            else if (cartasSeleccionadas == 12)
+            {
+                gridLayoutTablero.cellSize = new Vector2(80f, 100);
+            }
+            else if (cartasSeleccionadas == 16)
+            {
+                gridLayoutTablero.cellSize = new Vector2(80f, 70f);
+            }
+        }
+
+        GenerateBoard(cartasSeleccionadas);
+        ActualizarBotonesPoderes();
+        canPlayerPlay = true;
+        juegoActivo = true;
+    }
+
+    #region Selección de Dificultad
+
+    public void BotonAbrirInstrucciones()
+    {
+        if (panelMenuInicio != null) panelMenuInicio.SetActive(false);
+        if (panelInstrucciones != null) panelInstrucciones.SetActive(true);
+    }
+
+    public void BotonCerrarInstrucciones()
+    {
+        if (panelInstrucciones != null) panelInstrucciones.SetActive(false);
+        if (panelMenuInicio != null) panelMenuInicio.SetActive(true);
+    }
+
+    #endregion
+    #region Lógica del Tablero
 
     public void GenerateBoard(int totalCards)
     {
         int totalPairs = totalCards / 2;
+        totalParesPosibles = totalPairs;
+        paresEncontradosJugador = 0;
+        paresEncontradosBot = 0;
         deckInPlay.Clear();
 
         for (int i = 0; i < totalPairs; i++)
@@ -86,7 +228,7 @@ public class GameManager : MonoBehaviour
         {
             GameObject newCard = Instantiate(cardPrefab, boardPanel);
             CardVisual cv = newCard.GetComponent<CardVisual>();
-            cv.SetupCard(deckInPlay[i], this); 
+            cv.SetupCard(deckInPlay[i], this);
             allCardsOnBoard.Add(cv);
         }
     }
@@ -96,8 +238,7 @@ public class GameManager : MonoBehaviour
         if (firstCardRevealed == card) return;
 
         card.FlipCard();
-        
-        // FUNCIONALIDAD 4: Escalar
+
         card.GetComponent<CardAnimator>().AnimarPopUp();
 
         if (firstCardRevealed == null)
@@ -109,32 +250,33 @@ public class GameManager : MonoBehaviour
         {
             secondCardRevealed = card;
             Debug.Log("Segunda carta revelada.");
-            canPlayerPlay = false; 
-            
+            canPlayerPlay = false;
+
             StartCoroutine(CheckMatchRoutine());
         }
     }
 
     private IEnumerator CheckMatchRoutine()
     {
-        yield return new WaitForSeconds(1.8f); 
+        yield return new WaitForSeconds(1.8f);
 
         if (firstCardRevealed.cardData.pairID == secondCardRevealed.cardData.pairID)
         {
             Debug.Log("¡MATCH del Jugador! Ganas +1 Energía.");
-            
-            // REDISEÑO VISUAL (F4)
+            paresEncontradosJugador++;
+            RevisarFinDeJuego();
+
             firstCardRevealed.GetComponent<CardAnimator>().AnimarViajeAlSofa(panelParesColumna);
             secondCardRevealed.GetComponent<CardAnimator>().AnimarViajeAlSofa(panelParesColumna);
 
             energiaJugador++;
             ActualizarBotonesPoderes();
-            canPlayerPlay = true; 
+            canPlayerPlay = true;
         }
         else
         {
             Debug.Log("Error. Turno del Robot.");
-            
+
             firstCardRevealed.GetComponent<CardAnimator>().AnimarRegreso();
             secondCardRevealed.GetComponent<CardAnimator>().AnimarRegreso();
             firstCardRevealed.UnflipCard();
@@ -143,7 +285,7 @@ public class GameManager : MonoBehaviour
             if (saltarTurnoEnemigoActivo)
             {
                 Debug.Log("Poder Activo: El robot pierde su turno. ¡Vas de nuevo!");
-                saltarTurnoEnemigoActivo = false; 
+                saltarTurnoEnemigoActivo = false;
                 canPlayerPlay = true;
             }
             else
@@ -156,7 +298,9 @@ public class GameManager : MonoBehaviour
         secondCardRevealed = null;
     }
 
-    // --- FUNCIONALIDAD 5: MÉTODOS DE LOS BOTONES ---
+    #endregion
+
+    #region Poderes y UI auxiliares
 
     public void ActivarPoderSaltar()
     {
@@ -166,7 +310,7 @@ public class GameManager : MonoBehaviour
             saltarTurnoEnemigoActivo = true;
             ActualizarBotonesPoderes();
             Debug.Log("Poder comprado: Saltar turno enemigo.");
-            StartCoroutine(FlashPantalla(new Color(1f, 0f, 0f, 0.5f))); 
+            StartCoroutine(FlashPantalla(new Color(1f, 0f, 0f, 0.5f)));
         }
     }
 
@@ -177,7 +321,7 @@ public class GameManager : MonoBehaviour
             energiaJugador -= costoCongelar;
             ActualizarBotonesPoderes();
             Debug.Log("Poder comprado: Inmunidad activa. Tu turno sigue gratis.");
-            StartCoroutine(FlashPantalla(new Color(0f, 1f, 1f, 0.5f))); 
+            StartCoroutine(FlashPantalla(new Color(0f, 1f, 1f, 0.5f)));
         }
     }
 
@@ -194,7 +338,7 @@ public class GameManager : MonoBehaviour
 
             foreach (CardVisual card in allCardsOnBoard)
             {
-                if (!card.isFlipped) 
+                if (!card.isFlipped)
                 {
                     cartasOcultas.Add(card.transform);
                     indicesDisponibles.Add(card.transform.GetSiblingIndex());
@@ -215,14 +359,14 @@ public class GameManager : MonoBehaviour
             }
 
             memoriaRobot.Clear();
-            StartCoroutine(FlashPantalla(new Color(1f, 0.9f, 0f, 0.5f))); 
+            StartCoroutine(FlashPantalla(new Color(1f, 0.9f, 0f, 0.5f)));
         }
     }
 
     private void ActualizarBotonesPoderes()
     {
         if (textoEnergia != null) textoEnergia.text = "Movimientos/Energía: " + energiaJugador;
-        
+
         if (btnSaltarTurno != null) btnSaltarTurno.interactable = (energiaJugador >= costoSaltar);
         if (btnCongelar != null) btnCongelar.interactable = (energiaJugador >= costoCongelar);
         if (btnRevolver != null) btnRevolver.interactable = (energiaJugador >= costoRevolver);
@@ -231,16 +375,15 @@ public class GameManager : MonoBehaviour
     private IEnumerator FlashPantalla(Color colorFlash)
     {
         if (panelFondo == null) yield break;
-        Color colorOriginal = panelFondo.color; 
+        Color colorOriginal = panelFondo.color;
         panelFondo.color = colorFlash;
         yield return new WaitForSeconds(0.15f);
         panelFondo.color = colorOriginal;
     }
 
-    // --- FUNCIONALIDAD 3: IA DEL ROBOT ---
     private IEnumerator RobotTurnRoutine()
     {
-        Debug.Log("🤖 Turno del Robot. Revisando memoria...");
+        Debug.Log("Turno del Robot. Revisando memoria...");
         yield return new WaitForSeconds(1.0f);
         memoriaRobot.RemoveAll(c => c.isFlipped == true && c != firstCardRevealed && c != secondCardRevealed);
         CardVisual botCard1 = null;
@@ -266,7 +409,7 @@ public class GameManager : MonoBehaviour
             if (!card.isFlipped) cartasDisponibles.Add(card);
         }
 
-        if (cartasDisponibles.Count < 2) yield break; 
+        if (cartasDisponibles.Count < 2) yield break;
 
         if (botCard1 == null)
         {
@@ -277,7 +420,7 @@ public class GameManager : MonoBehaviour
         botCard1.FlipCard();
         botCard1.GetComponent<CardAnimator>().AnimarPopUp();
         if (!memoriaRobot.Contains(botCard1)) memoriaRobot.Add(botCard1);
-        
+
         yield return new WaitForSeconds(1.0f);
 
         if (botCard2 == null)
@@ -286,7 +429,7 @@ public class GameManager : MonoBehaviour
             {
                 if (conocida.cardData.pairID == botCard1.cardData.pairID && conocida != botCard1 && !conocida.isFlipped)
                 {
-                    botCard2 = conocida; 
+                    botCard2 = conocida;
                     break;
                 }
             }
@@ -305,11 +448,13 @@ public class GameManager : MonoBehaviour
 
         if (botCard1.cardData.pairID == botCard2.cardData.pairID)
         {
-            Debug.Log("🤖 ¡El Robot hizo MATCH! Viajando al Salón de la Fama.");
-            
+            Debug.Log("¡El Robot hizo MATCH!.");
+            paresEncontradosBot++;
+            RevisarFinDeJuego();
+
             botCard1.GetComponent<CardAnimator>().AnimarViajeAlSofa(panelParesColumna);
             botCard2.GetComponent<CardAnimator>().AnimarViajeAlSofa(panelParesColumna);
-            
+
             StartCoroutine(RobotTurnRoutine());
             yield break;
         }
@@ -322,4 +467,54 @@ public class GameManager : MonoBehaviour
         }
         canPlayerPlay = true;
     }
+
+    #endregion
+
+    #region Sistema de Tiempo y Pausa
+
+    public void PausarJuego()
+    {
+        if (panelPausa != null) panelPausa.SetActive(true);
+        Time.timeScale = 0f;
+        juegoActivo = false;
+    }
+
+    public void ContinuarJuego()
+    {
+        if (panelPausa != null) panelPausa.SetActive(false);
+        Time.timeScale = 1f;
+        juegoActivo = true;
+    }
+
+    public void ReintentarPartida()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void VolverAlMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void RevisarFinDeJuego(bool seAcaboElTiempo = false)
+    {
+        if (paresEncontradosJugador + paresEncontradosBot >= totalParesPosibles || seAcaboElTiempo)
+        {
+            PlayerPrefs.SetFloat("TiempoSobrante", tiempoDePartida);
+            PlayerPrefs.SetInt("EnergiaFinal", energiaJugador);
+            PlayerPrefs.SetInt("ParesJugador", paresEncontradosJugador);
+
+            if (paresEncontradosJugador > paresEncontradosBot && !seAcaboElTiempo)
+            {
+                SceneManager.LoadScene("Pantalla_Fin");
+            }
+            else
+            {
+                SceneManager.LoadScene("Pantalla_Perdiste");
+            }
+        }
+    }
+    #endregion
 }
