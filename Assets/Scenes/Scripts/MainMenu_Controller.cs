@@ -1,10 +1,7 @@
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
- Minijuego-debugging
 
-
-main
 public class MainMenu_Controller : MonoBehaviour
 {
     public void RoadRush()
@@ -20,8 +17,8 @@ public class MainMenu_Controller : MonoBehaviour
     public void JuegoEnsamblaje()
     {
         SceneManager.LoadScene("Reglas");
-    } 
-    Minijuego-debugging
+    }
+    
 
     public void DebuggingRace()
     {
@@ -33,5 +30,4 @@ public class MainMenu_Controller : MonoBehaviour
     }
 }
 
-}
-main
+

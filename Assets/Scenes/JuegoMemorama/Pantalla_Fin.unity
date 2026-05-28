@@ -598,7 +598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PantallaFinManager
   textoParesEncontrados: {fileID: 0}
   textoEnergiaRestante: {fileID: 213742084}
-  textoTiempoSobrante: {fileID: 0}
+  textoTiempoSobrante: {fileID: 1488805688}
   textoMedallonesGanados: {fileID: 877077492}
 --- !u!1 &213742082
 GameObject:

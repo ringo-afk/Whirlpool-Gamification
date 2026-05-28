@@ -13,8 +13,7 @@ public class GameManager : MonoBehaviour
     public Transform boardPanel;
 
     [Header("Efectos de Sonido")]
-    public AudioSource reproductorSFX; // Conecta el segundo AudioSource aquí
-    public AudioClip sonidoVoltearCarta;
+    public AudioSource reproductorSFX;     public AudioClip sonidoVoltearCarta;
     public AudioClip sonidoBoton;
 
     [Header("Base de Datos Interna")]
