@@ -78,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 transform.eulerAngles -= new Vector3(0,0,turnSpeed * Time.deltaTime);
             }
+
             if (Keyboard.current.downArrowKey.isPressed)
             {
                 /*if(Vector2.Dot(rb.linearVelocity.normalized, transform.right) > 0)
