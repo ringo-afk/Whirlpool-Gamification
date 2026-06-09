@@ -9,7 +9,7 @@ public class GameControlDebugging : MonoBehaviour
     public static GameControlDebugging Instance;
 
     [Header("API")]
-    public string resultadoApiUrl = "https://127.0.0.1:8002/api/debuggingrace/resultado";
+    public string resultadoApiUrl = "https://10.14.255.40:8002/api/debuggingrace/resultado";
     public int idUsuario = 1;
 
     [Header("Datos del jugador")]

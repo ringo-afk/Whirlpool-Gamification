@@ -13,7 +13,7 @@ public class TriviaDebugging : MonoBehaviour
     public TextMeshProUGUI answer3Text;
     public TextMeshProUGUI feedbackText;
 
-    public string apiUrl = "https://127.0.0.1:8002/api/debuggingrace/preguntas";
+    public string apiUrl = "https://10.14.255.40:8002/api/debuggingrace/preguntas";
 
     private List<PreguntaAPI> preguntas = new List<PreguntaAPI>();
 
