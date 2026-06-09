@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class Draggable : MonoBehaviour
 {
     [SerializeField] public string choiceTag = "Rol";
     [SerializeField] public string answerId = "";
+    [SerializeField] private TMP_Text answerText;
 
     private Camera mainCamera;
     private Vector3 dragOffset;
@@ -16,6 +18,17 @@ public class Draggable : MonoBehaviour
         mainCamera = Camera.main;
         objectCollider2D = GetComponent<Collider2D>();
     }
+
+    public void Setup(string text, bool correct)
+{
+    if (answerText == null)
+        answerText = GetComponentInChildren<TMP_Text>();
+
+    if (answerText != null)
+        answerText.text = text;
+
+    answerId = correct ? "correct" : "wrong";
+}
 
     private void OnMouseDown()
     {

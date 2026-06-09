@@ -1885,7 +1885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e6275ed2ed42e543b4f8775c798ac8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DropRoundSequenceController
-  apiUrl: https://10.22.146.252:8443/getPrompt/
+  apiUrl: https://192.168.1.5:8443/getPrompt/
   promptId: 11
   promptTextUi: {fileID: 1243745498}
   dropBoxes:

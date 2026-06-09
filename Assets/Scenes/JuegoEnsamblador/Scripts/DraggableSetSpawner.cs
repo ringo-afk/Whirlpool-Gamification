@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class DraggableSetSpawner : MonoBehaviour
 {
     [SerializeField] private Transform[] spawnPoints;
 
     [SerializeField] private Draggable[] draggablePrefabs;
+    [SerializeField] private Draggable draggableTemplate;
 
     [SerializeField] private Transform draggablesRoot;
 
@@ -51,6 +53,30 @@ public class DraggableSetSpawner : MonoBehaviour
             {
                 Destroy(existing[i].gameObject);
             }
+        }
+    }
+
+    public void SpawnApiOptions(List<ApiAnswer> answers)
+    {
+    ClearExistingDraggables();
+
+    if (answers == null || answers.Count == 0)
+        return;
+
+    answers = answers.OrderBy(x => Random.value).ToList();
+
+    for (int i = 0; i < spawnPoints.Length && i < answers.Count; i++)
+        {
+        Draggable drag = Instantiate(
+            draggableTemplate,
+            spawnPoints[i].position,
+            spawnPoints[i].rotation,
+            draggablesRoot);
+
+        drag.Setup(
+            answers[i].texto,
+            answers[i].correcta
+        );
         }
     }
 
