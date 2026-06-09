@@ -155,4 +155,4 @@ public class ApiResponseMejoras
     public Modificadores modificadores_acumulados;
 }
 
-public class BypassCertificate : CertificateHandler { protected override bool ValidateCertificate(byte[] certificateData) => true; }
+public class BypassCertificate2 : CertificateHandler { protected override bool ValidateCertificate(byte[] certificateData) => true; }
