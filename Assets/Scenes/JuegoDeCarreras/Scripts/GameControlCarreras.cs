@@ -6,7 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class GameControl : MonoBehaviour
 {
-    static public GameControl Instance;
+    public static GameControl Instance { get; private set; }
+
+    [Header("Configuración Global de API")]
+    public string apiBaseUrl = "http://127.0.0.1:8000/api/";
+    public int usuarioIdActual = 1;
+    
     [SerializeField] private GameObject botonPausa;
     [SerializeField] private GameObject panelPausa;
     public TextMeshProUGUI textLaps;
