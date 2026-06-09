@@ -67,6 +67,6 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Juego.slnx",
+    "dotnet.defaultSolution": "Whirlpool-Gamification.slnx",
     "dotnet.enableWorkspaceBasedDevelopment": false
 }
