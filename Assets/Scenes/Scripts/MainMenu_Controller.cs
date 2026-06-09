@@ -1,6 +1,6 @@
-using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 
 public class MainMenu_Controller : MonoBehaviour
 {
@@ -18,16 +18,4 @@ public class MainMenu_Controller : MonoBehaviour
     {
         SceneManager.LoadScene("Reglas");
     }
-    
-
-    public void DebuggingRace()
-    {
-        SceneManager.LoadScene("DebuggingRace_Instrucciones");
-    }
-    public void CyberMatch(){
-        SceneManager.LoadScene("JuegoMemoramaRediseño");
-
-    }
 }
-
-

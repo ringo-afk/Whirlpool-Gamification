@@ -124,7 +124,7 @@ public class DropObject : MonoBehaviour
         }
         else
         {
-            candidates = FindObjectsByType<Draggable>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+            candidates = FindObjectsOfType<Draggable>();
         }
 
         for (int i = 0; i < candidates.Length; i++)
