@@ -7,29 +7,35 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    #region Variables y UI
-    [Header("Configuración del Tablero")]
     public GameObject cardPrefab;
     public Transform boardPanel;
 
-    [Header("Efectos de Sonido")]
-    public AudioSource reproductorSFX;     public AudioClip sonidoVoltearCarta;
-    public AudioClip sonidoBoton;
+    public AudioSource reproductorSFX;     
+    public AudioClip sonidoGanar;
+    public AudioClip sonidoPerder;
 
-    [Header("Base de Datos Interna")]
     public List<CardData> allAvailablePairs = new List<CardData>();
     private List<CardData> deckInPlay = new List<CardData>();
     private List<CardVisual> allCardsOnBoard = new List<CardVisual>();
 
-    [Header("Funcionalidad 3: Memoria del Robot")]
     public List<CardVisual> memoriaRobot = new List<CardVisual>();
 
-    [Header("Funcionalidad 5: Economía y Poderes")]
     public int energiaJugador = 5;
     public TextMeshProUGUI textoEnergia;
-    [Header("Textos del HUD")]
+    
     public TextMeshProUGUI textoDificultad;
-    [Header("Configuración del Tablero Dinámico")]
+    
+    public TextMeshProUGUI textoNombreJugador;
+    public TextMeshProUGUI textoNombreRobot;
+    public Color colorTurnoActivo = new Color(0f, 1f, 1f, 1f); 
+    public Color colorTurnoInactivo = new Color(0.3f, 0.3f, 0.3f, 1f); 
+
+    public GameObject panelOscurecidoBoton;
+    public GameObject panelTextoExplicacion;
+    public TextMeshProUGUI textoDeLaExplicacion;
+    private CardVisual cartaMatch1Guardada;
+    private CardVisual cartaMatch2Guardada;
+
     public GridLayoutGroup gridLayoutTablero;
     public Button btnSaltarTurno;
     public Button btnCongelar;
@@ -38,55 +44,66 @@ public class GameManager : MonoBehaviour
     public int costoCongelar = 2;
     public int costoRevolver = 2;
 
-    [Header("Control de Partida")]
     private int paresEncontradosJugador = 0;
     private int paresEncontradosBot = 0;
     private int totalParesPosibles;
     public float tiempoRestante = 0f;
 
-    [Header("Sistema de Tiempo y Pausa")]
     public TextMeshProUGUI textoTiempoRestante;
     public float tiempoDePartida = 60f;
     public GameObject panelPausa;
     private bool juegoActivo = false;
 
-    [Header("Selección de Dificultad")]
+    public static bool esUnReintento = false;
+    public static int dificultadGuardada = 8;
     private int cartasSeleccionadas = 8;
-    private string nombreDificultad = "Fácil";
+    private string nombreDificultad = "Normal";
 
-    public UnityEngine.UI.Image imgBtnFacil;
-    public UnityEngine.UI.Image imgBtnMedio;
+    public UnityEngine.UI.Image imgBtnNormal;
     public UnityEngine.UI.Image imgBtnDificil;
 
     public Color colorNoSeleccionado = Color.white;
     public Color colorSeleccionado = Color.cyan;
 
-    [Header("Pantallas de Menú")]
     public GameObject panelMenuInicio;
     public GameObject panelInstrucciones;
 
     private bool saltarTurnoEnemigoActivo = false;
 
-    [Header("Efectos Visuales")]
     public Image panelFondo;
-
-    [Header("Salón de la Fama (F4)")]
     public Transform panelParesColumna;
 
     public bool canPlayerPlay = true;
 
-    [Header("Memoria del Tablero")]
     private CardVisual firstCardRevealed;
     private CardVisual secondCardRevealed;
 
-    #endregion
-
-    #region Inicio y Update
     void Start()
     {
+        if (esUnReintento)
+        {
+            if (panelMenuInicio != null) panelMenuInicio.SetActive(false);
+            if (panelInstrucciones != null) panelInstrucciones.SetActive(false);
+            if (panelPausa != null) panelPausa.SetActive(false);
+            if (panelOscurecidoBoton != null) panelOscurecidoBoton.SetActive(false);
+            if (panelTextoExplicacion != null) panelTextoExplicacion.SetActive(false);
+
+            cartasSeleccionadas = dificultadGuardada;
+            if (cartasSeleccionadas == 8) nombreDificultad = "Normal";
+            else if (cartasSeleccionadas == 12) nombreDificultad = "Difícil";
+
+            esUnReintento = false;
+            BotonJugar();
+            return;
+        }
+
         if (panelMenuInicio != null) panelMenuInicio.SetActive(true);
         if (panelInstrucciones != null) panelInstrucciones.SetActive(false);
         if (panelPausa != null) panelPausa.SetActive(false);
+        if (panelOscurecidoBoton != null) panelOscurecidoBoton.SetActive(false);
+        if (panelTextoExplicacion != null) panelTextoExplicacion.SetActive(false);
+
+        ActualizarColoresBotones();
     }
 
     void Update()
@@ -107,68 +124,52 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    #endregion
 
-    public void SeleccionarFacil()
+    public void ActualizarIndicadorTurno(bool esTurnoJugador)
     {
-        cartasSeleccionadas = 8;
-        nombreDificultad = "Fácil";
-        ActualizarColoresBotones();
+        if (textoNombreJugador != null) textoNombreJugador.color = esTurnoJugador ? colorTurnoActivo : colorTurnoInactivo;
+        if (textoNombreRobot != null) textoNombreRobot.color = esTurnoJugador ? colorTurnoInactivo : colorTurnoActivo;
     }
 
-    public void SeleccionarMedio()
+    public void SeleccionarNormal()
     {
-        cartasSeleccionadas = 12;
-        nombreDificultad = "Medio";
+        cartasSeleccionadas = 8;
+        nombreDificultad = "Normal";
         ActualizarColoresBotones();
     }
 
     public void SeleccionarDificil()
     {
-        cartasSeleccionadas = 16;
+        cartasSeleccionadas = 12;
         nombreDificultad = "Difícil";
         ActualizarColoresBotones();
     }
 
     private void ActualizarColoresBotones()
     {
-        if (imgBtnFacil != null) imgBtnFacil.color = (cartasSeleccionadas == 8) ? colorSeleccionado : colorNoSeleccionado;
-        if (imgBtnMedio != null) imgBtnMedio.color = (cartasSeleccionadas == 12) ? colorSeleccionado : colorNoSeleccionado;
-        if (imgBtnDificil != null) imgBtnDificil.color = (cartasSeleccionadas == 16) ? colorSeleccionado : colorNoSeleccionado;
+        if (imgBtnNormal != null) imgBtnNormal.color = (cartasSeleccionadas == 8) ? colorSeleccionado : colorNoSeleccionado;
+        if (imgBtnDificil != null) imgBtnDificil.color = (cartasSeleccionadas == 12) ? colorSeleccionado : colorNoSeleccionado;
     }
 
     public void BotonJugar()
     {
-        if (panelMenuInicio != null) panelMenuInicio.SetActive(false);
+        dificultadGuardada = cartasSeleccionadas;
 
-        if (textoDificultad != null)
-        {
-            textoDificultad.text = "Nivel: " + nombreDificultad;
-        }
+        if (panelMenuInicio != null) panelMenuInicio.SetActive(false);
+        if (textoDificultad != null) textoDificultad.text = "Nivel: " + nombreDificultad;
 
         if (gridLayoutTablero != null)
         {
-            if (cartasSeleccionadas == 8)
-            {
-                gridLayoutTablero.cellSize = new Vector2(95f, 120f);
-            }
-            else if (cartasSeleccionadas == 12)
-            {
-                gridLayoutTablero.cellSize = new Vector2(80f, 100);
-            }
-            else if (cartasSeleccionadas == 16)
-            {
-                gridLayoutTablero.cellSize = new Vector2(80f, 70f);
-            }
+            if (cartasSeleccionadas == 8) gridLayoutTablero.cellSize = new Vector2(95f, 120f);
+            else if (cartasSeleccionadas == 12) gridLayoutTablero.cellSize = new Vector2(65f, 85f);
         }
 
         GenerateBoard(cartasSeleccionadas);
         ActualizarBotonesPoderes();
         canPlayerPlay = true;
         juegoActivo = true;
+        ActualizarIndicadorTurno(true); 
     }
-
-    #region Selección de Dificultad
 
     public void BotonAbrirInstrucciones()
     {
@@ -181,9 +182,6 @@ public class GameManager : MonoBehaviour
         if (panelInstrucciones != null) panelInstrucciones.SetActive(false);
         if (panelMenuInicio != null) panelMenuInicio.SetActive(true);
     }
-
-    #endregion
-    #region Lógica del Tablero
 
     public void GenerateBoard(int totalCards)
     {
@@ -216,11 +214,7 @@ public class GameManager : MonoBehaviour
 
     private void PopulateGrid()
     {
-        foreach (Transform child in boardPanel)
-        {
-            Destroy(child.gameObject);
-        }
-
+        foreach (Transform child in boardPanel) Destroy(child.gameObject);
         allCardsOnBoard.Clear();
 
         for (int i = 0; i < deckInPlay.Count; i++)
@@ -237,20 +231,16 @@ public class GameManager : MonoBehaviour
         if (firstCardRevealed == card) return;
 
         card.FlipCard();
-
         card.GetComponent<CardAnimator>().AnimarPopUp();
 
         if (firstCardRevealed == null)
         {
             firstCardRevealed = card;
-            Debug.Log("Primera carta revelada.");
         }
         else if (secondCardRevealed == null)
         {
             secondCardRevealed = card;
-            Debug.Log("Segunda carta revelada.");
             canPlayerPlay = false;
-
             StartCoroutine(CheckMatchRoutine());
         }
     }
@@ -261,21 +251,30 @@ public class GameManager : MonoBehaviour
 
         if (firstCardRevealed.cardData.pairID == secondCardRevealed.cardData.pairID)
         {
-            Debug.Log("¡MATCH del Jugador! Ganas +1 Energía.");
             paresEncontradosJugador++;
             RevisarFinDeJuego();
+            cartaMatch1Guardada = firstCardRevealed;
+            cartaMatch2Guardada = secondCardRevealed;
 
-            firstCardRevealed.GetComponent<CardAnimator>().AnimarViajeAlSofa(panelParesColumna);
-            secondCardRevealed.GetComponent<CardAnimator>().AnimarViajeAlSofa(panelParesColumna);
+            if (textoDeLaExplicacion != null)
+            {
+                string textoProblema = firstCardRevealed.cardData.isProblem ? firstCardRevealed.cardData.cardText : secondCardRevealed.cardData.cardText;
+                string textoPrompt = !firstCardRevealed.cardData.isProblem ? firstCardRevealed.cardData.cardText : secondCardRevealed.cardData.cardText;
+                int idDelPar = firstCardRevealed.cardData.pairID;
+                string textoExplicacion = ObtenerExplicacion(idDelPar);
+                
+                textoDeLaExplicacion.text = $"<color=#FF5555><b>Problema:</b></color> {textoProblema}\n\n<color=#55FF55><b>Prompt IA:</b></color> {textoPrompt}\n\n<color=#FFFF55><b>¿Por qué es un buen Match?</b></color>\n{textoExplicacion}";
+            }
+
+            if (panelOscurecidoBoton != null) panelOscurecidoBoton.SetActive(true);
+            if (panelTextoExplicacion != null) panelTextoExplicacion.SetActive(true);
 
             energiaJugador++;
             ActualizarBotonesPoderes();
-            canPlayerPlay = true;
+            canPlayerPlay = false;
         }
         else
         {
-            Debug.Log("Error. Turno del Robot.");
-
             firstCardRevealed.GetComponent<CardAnimator>().AnimarRegreso();
             secondCardRevealed.GetComponent<CardAnimator>().AnimarRegreso();
             firstCardRevealed.UnflipCard();
@@ -283,12 +282,12 @@ public class GameManager : MonoBehaviour
 
             if (saltarTurnoEnemigoActivo)
             {
-                Debug.Log("Poder Activo: El robot pierde su turno. ¡Vas de nuevo!");
                 saltarTurnoEnemigoActivo = false;
                 canPlayerPlay = true;
             }
             else
             {
+                ActualizarIndicadorTurno(false); 
                 StartCoroutine(RobotTurnRoutine());
             }
         }
@@ -297,9 +296,19 @@ public class GameManager : MonoBehaviour
         secondCardRevealed = null;
     }
 
-    #endregion
+    public void BotonContinuarTrasMatch()
+    {
+        if (panelOscurecidoBoton != null) panelOscurecidoBoton.SetActive(false);
+        if (panelTextoExplicacion != null) panelTextoExplicacion.SetActive(false);
 
-    #region Poderes y UI auxiliares
+        if (cartaMatch1Guardada != null) cartaMatch1Guardada.GetComponent<CardAnimator>().AnimarViajeAlSofa(panelParesColumna);
+        if (cartaMatch2Guardada != null) cartaMatch2Guardada.GetComponent<CardAnimator>().AnimarViajeAlSofa(panelParesColumna);
+
+        cartaMatch1Guardada = null;
+        cartaMatch2Guardada = null;
+
+        canPlayerPlay = true;
+    }
 
     public void ActivarPoderSaltar()
     {
@@ -308,7 +317,6 @@ public class GameManager : MonoBehaviour
             energiaJugador -= costoSaltar;
             saltarTurnoEnemigoActivo = true;
             ActualizarBotonesPoderes();
-            Debug.Log("Poder comprado: Saltar turno enemigo.");
             StartCoroutine(FlashPantalla(new Color(1f, 0f, 0f, 0.5f)));
         }
     }
@@ -319,7 +327,6 @@ public class GameManager : MonoBehaviour
         {
             energiaJugador -= costoCongelar;
             ActualizarBotonesPoderes();
-            Debug.Log("Poder comprado: Inmunidad activa. Tu turno sigue gratis.");
             StartCoroutine(FlashPantalla(new Color(0f, 1f, 1f, 0.5f)));
         }
     }
@@ -330,7 +337,6 @@ public class GameManager : MonoBehaviour
         {
             energiaJugador -= costoRevolver;
             ActualizarBotonesPoderes();
-            Debug.Log("Poder comprado: Tablero revuelto (Solo cartas boca abajo).");
 
             List<Transform> cartasOcultas = new List<Transform>();
             List<int> indicesDisponibles = new List<int>();
@@ -352,10 +358,7 @@ public class GameManager : MonoBehaviour
                 indicesDisponibles[randomIndex] = temp;
             }
 
-            for (int i = 0; i < cartasOcultas.Count; i++)
-            {
-                cartasOcultas[i].SetSiblingIndex(indicesDisponibles[i]);
-            }
+            for (int i = 0; i < cartasOcultas.Count; i++) cartasOcultas[i].SetSiblingIndex(indicesDisponibles[i]);
 
             memoriaRobot.Clear();
             StartCoroutine(FlashPantalla(new Color(1f, 0.9f, 0f, 0.5f)));
@@ -365,7 +368,6 @@ public class GameManager : MonoBehaviour
     private void ActualizarBotonesPoderes()
     {
         if (textoEnergia != null) textoEnergia.text = "Movimientos/Energía: " + energiaJugador;
-
         if (btnSaltarTurno != null) btnSaltarTurno.interactable = (energiaJugador >= costoSaltar);
         if (btnCongelar != null) btnCongelar.interactable = (energiaJugador >= costoCongelar);
         if (btnRevolver != null) btnRevolver.interactable = (energiaJugador >= costoRevolver);
@@ -382,7 +384,6 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RobotTurnRoutine()
     {
-        Debug.Log("Turno del Robot. Revisando memoria...");
         yield return new WaitForSeconds(1.0f);
         memoriaRobot.RemoveAll(c => c.isFlipped == true && c != firstCardRevealed && c != secondCardRevealed);
         CardVisual botCard1 = null;
@@ -447,7 +448,6 @@ public class GameManager : MonoBehaviour
 
         if (botCard1.cardData.pairID == botCard2.cardData.pairID)
         {
-            Debug.Log("¡El Robot hizo MATCH!.");
             paresEncontradosBot++;
             RevisarFinDeJuego();
 
@@ -464,12 +464,10 @@ public class GameManager : MonoBehaviour
             botCard1.UnflipCard();
             botCard2.UnflipCard();
         }
+        
         canPlayerPlay = true;
+        ActualizarIndicadorTurno(true); 
     }
-
-    #endregion
-
-    #region Sistema de Tiempo y Pausa
 
     public void PausarJuego()
     {
@@ -488,13 +486,23 @@ public class GameManager : MonoBehaviour
     public void ReintentarPartida()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        esUnReintento = true;
+        dificultadGuardada = cartasSeleccionadas;
+        SceneManager.LoadScene("JuegoMemoramaRediseño");
+    }
+
+    public void CargarEscenaMenu()
+    {
+        Time.timeScale = 1f;
+        esUnReintento = false;
+        SceneManager.LoadScene("JuegoMemoramaRediseño");
     }
 
     public void VolverAlMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        esUnReintento = false;
+        SceneManager.LoadScene("2_Menu");
     }
 
     private void RevisarFinDeJuego(bool seAcaboElTiempo = false)
@@ -505,15 +513,70 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("EnergiaFinal", energiaJugador);
             PlayerPrefs.SetInt("ParesJugador", paresEncontradosJugador);
 
-            if (paresEncontradosJugador > paresEncontradosBot && !seAcaboElTiempo)
+            bool jugadorGana = (paresEncontradosJugador > paresEncontradosBot && !seAcaboElTiempo);
+            StartCoroutine(TransicionFinDeJuego(jugadorGana));
+        }
+    }
+
+    private IEnumerator TransicionFinDeJuego(bool jugadorGana)
+    {
+        canPlayerPlay = false;
+        juegoActivo = false;
+
+        if (jugadorGana)
+        {
+            if (reproductorSFX != null && sonidoGanar != null)
             {
-                SceneManager.LoadScene("Pantalla_Fin");
+                reproductorSFX.PlayOneShot(sonidoGanar);
+                yield return new WaitForSeconds(sonidoGanar.length);
             }
             else
             {
-                SceneManager.LoadScene("Pantalla_Perdiste");
+                yield return new WaitForSeconds(1.5f);
             }
+
+            SceneManager.LoadScene("Pantalla_Fin");
+        }
+        else
+        {
+            if (reproductorSFX != null && sonidoPerder != null)
+            {
+                reproductorSFX.PlayOneShot(sonidoPerder);
+                yield return new WaitForSeconds(sonidoPerder.length);
+            }
+            else
+            {
+                yield return new WaitForSeconds(1.5f);
+            }
+
+            SceneManager.LoadScene("Pantalla_Perdiste");
         }
     }
-    #endregion
+
+    private string ObtenerExplicacion(int pairID)
+    {
+        switch (pairID)
+        {
+            case 1:
+                return "Asignarle el rol de 'DBA' (Administrador de Base de Datos) le da contexto a la IA para generar una consulta SQL experta y exacta que identifique fallos en el inventario.";
+            case 2:
+                return "Pedir específicamente 'empatía' y ofrecer una solución accionable (el descuento) transforma una situación de crisis en una oportunidad para retener al cliente.";
+            case 3:
+                return "Al adjuntar el PDF y pedir solo los 'puntos clave de ganancias y pérdidas', la IA filtra cientos de páginas y extrae directamente la información financiera crítica.";
+            case 4:
+                return "Al proporcionarle el bloque de código exacto, la IA actúa como un 'linter' avanzado, leyendo la lógica y encontrando el error de sintaxis en segundos.";
+            case 5:
+                return "Asignar el rol de 'Analista de logística' asegura que el código en Python no sea genérico, sino que aplique modelos matemáticos enfocados a cadenas de suministro y stock.";
+            case 6:
+                return "El uso de palabras clave como 'técnicas de copywriting' y 'urgencia' obliga a la IA a generar ganchos comerciales persuasivos que invitan al clic inmediato.";
+            case 7:
+                return "Solicitar un script de automatización (VBA) para tareas repetitivas elimina días enteros de trabajo manual y reduce a cero los errores humanos al consolidar datos.";
+            case 8:
+                return "Pedirle a la IA que baje el nivel técnico para un 'usuario sin conocimientos' traduce de inmediato la jerga ingenieril compleja en instrucciones digeribles para el consumidor final.";
+            case 9:
+                return "El enfoque en 'Retorno de Inversión (ROI)' ataca directamente el problema del precio, dándole a tu equipo argumentos lógicos sobre cómo el equipo se pagará solo a largo plazo.";
+            default:
+                return "¡Excelente uso de la Inteligencia Artificial para resolver un problema de la empresa!";
+        }
+    }
 }
