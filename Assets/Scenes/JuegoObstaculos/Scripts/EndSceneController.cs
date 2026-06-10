@@ -1,5 +1,8 @@
+using System.Collections;
+using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 public class EndSceneController : MonoBehaviour
@@ -17,6 +20,9 @@ public class EndSceneController : MonoBehaviour
         coinsText.text = "" + coins;
         livesText.text = "" + lives;
         timeText.text = "Tiempo: " + FormatTime(time);
+
+        //StartCoroutine(Guardar(time, coins));
+
     }
 
     string FormatTime(float time)
@@ -28,6 +34,42 @@ public class EndSceneController : MonoBehaviour
         return string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, milliseconds);
     }
 
+    /*
+    private IEnumerator Guardar(float time, int coins)
+    {
+        int kilometrosObtenidos = Mathf.FloorToInt(time);
+
+        PartidaData data = new PartidaData
+        {
+            usuario_id = GameControl.Instance.usuarioIdActual,
+            juego_id = juegoId,
+            kilometros = kilometrosObtenidos,
+            monedas_ganadas = coins
+        };
+
+        string jsonData = JsonUtility.ToJson(data);
+        string url = "https://10.14.255.40:8000/api/juegos/guardar-partida";
+
+        using (UnityWebRequest webRequest = new UnityWebRequest(url, "POST"))
+        {
+            byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+            webRequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            webRequest.downloadHandler = new DownloadHandlerBuffer();
+            webRequest.SetRequestHeader("Content-Type", "application/json");
+
+            webRequest.certificateHandler = new BypassCertificate();
+
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("Error al guardar resultados en BD: " + webRequest.error);
+            }
+        }
+
+    }*/
+
+
     public void StartGame()
     {
         SceneManager.LoadScene("GameSceneRoadRush");
@@ -37,4 +79,13 @@ public class EndSceneController : MonoBehaviour
     {
         SceneManager.LoadScene("MenuRoadRush");
     }
+}
+
+[System.Serializable]
+public class PartidaData
+{
+    public int usuario_id;
+    public int juego_id;
+    public int kilometros;
+    public int monedas_ganadas;
 }
