@@ -1885,7 +1885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e6275ed2ed42e543b4f8775c798ac8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DropRoundSequenceController
-  apiUrl: https://192.168.1.14:8443/getPrompt/14
+  apiUrl: https://192.168.1.14:8443/getPrompt/
   promptId: 14
   promptIds: 0b0000000c0000000d0000000e000000
   promptTextUi: {fileID: 1243745498}

@@ -8,6 +8,7 @@ public class DropRoundSequenceController : MonoBehaviour
 {
     [Header("API")]
     [SerializeField] private string apiUrl = "https://10.14.255.40:8004/getPrompt/";
+    [SerializeField] private int requestTimeoutSeconds = 10;
     [SerializeField] private int promptId = 14;
     [SerializeField]private int[] promptIds = {11,12,13,14};
     [Header("References")]
@@ -71,22 +72,49 @@ public class DropRoundSequenceController : MonoBehaviour
     private void Start()
     {promptId = promptIds[Random.Range(0, promptIds.Length)];
 
-    StartCoroutine(LoadPromptFromApi());
+        StartCoroutine(LoadPromptFromApi());
+    }
+
+    private string BuildPromptUrl(int id)
+    {
+        string baseUrl = apiUrl.Trim();
+
+        if (baseUrl.EndsWith("/"))
+        {
+            baseUrl = baseUrl.TrimEnd('/');
+        }
+
+        int lastSlash = baseUrl.LastIndexOf('/');
+        if (lastSlash >= 0 && lastSlash < baseUrl.Length - 1)
+        {
+            string tail = baseUrl.Substring(lastSlash + 1);
+            if (int.TryParse(tail, out _))
+            {
+                baseUrl = baseUrl.Substring(0, lastSlash);
+            }
+        }
+
+        return baseUrl + "/" + id;
     }
 
     private IEnumerator LoadPromptFromApi()
     {
-        UnityWebRequest request =
-            UnityWebRequest.Get(apiUrl + promptId);
+        string requestUrl = BuildPromptUrl(promptId);
+        Debug.Log("Solicitando prompt: " + requestUrl);
 
-        request.certificateHandler =
-            new BypassCertificate();
+        using UnityWebRequest request = UnityWebRequest.Get(requestUrl);
+        request.certificateHandler = new ByPassCertificateJE();
+        request.timeout = requestTimeoutSeconds;
 
         yield return request.SendWebRequest();
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError(request.error);
+            Debug.LogError(
+                "Error API (" + request.responseCode + "): "
+                + request.error
+                + "\nURL: " + requestUrl);
+
             yield break;
         }
 
