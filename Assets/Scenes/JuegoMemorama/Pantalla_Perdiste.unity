@@ -430,9 +430,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 182546524}
-        m_TargetAssemblyTypeName: MisionFallidaManager, Assembly-CSharp
-        m_MethodName: VolverAlMenu
+      - m_Target: {fileID: 424320565}
+        m_TargetAssemblyTypeName: ControladorPantallasFinales, Assembly-CSharp
+        m_MethodName: RegresarAlMenuPrincipal
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -873,6 +873,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 213742082}
   m_CullTransparentMesh: 1
+--- !u!1 &424320564
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 424320566}
+  - component: {fileID: 424320565}
+  m_Layer: 0
+  m_Name: controladorpantalla
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &424320565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424320564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7465946b515e3434b908ae9cfebe21dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ControladorPantallasFinales
+--- !u!4 &424320566
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424320564}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 456.12134, y: 267.5005, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &486194556
 GameObject:
   m_ObjectHideFlags: 0
@@ -1451,9 +1495,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 182546524}
-        m_TargetAssemblyTypeName: MisionFallidaManager, Assembly-CSharp
-        m_MethodName: Reintentar
+      - m_Target: {fileID: 424320565}
+        m_TargetAssemblyTypeName: ControladorPantallasFinales, Assembly-CSharp
+        m_MethodName: ReintentarJuegoCompleto
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1861,3 +1905,4 @@ SceneRoots:
   - {fileID: 53959264}
   - {fileID: 182546523}
   - {fileID: 486194559}
+  - {fileID: 424320566}

@@ -3,7 +3,7 @@ using TMPro;
 
 public class PantallaFinManager : MonoBehaviour
 {
-    [Header("Textos de la Interfaz")]
+    
     public TextMeshProUGUI textoParesEncontrados;
     public TextMeshProUGUI textoEnergiaRestante;
     public TextMeshProUGUI textoTiempoSobrante; 
