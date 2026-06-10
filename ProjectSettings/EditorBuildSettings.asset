@@ -89,5 +89,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/JuegoDebugging/DebuggingRace_Pausa.unity
     guid: a813d1cc339554ec4a79d237098c43db
+  - enabled: 1
+    path: Assets/Scenes/1_Login.unity
+    guid: 6aae853afd7cbbd4b8e0e67ee6c18cae
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
