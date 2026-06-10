@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Assemblies;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class GameControlRR : MonoBehaviour
 {
@@ -20,14 +21,28 @@ public class GameControlRR : MonoBehaviour
     public int currentLevel;
     private float time;
     public bool gameIsRunning;
-
+    public SpriteRenderer playerSprite;
     // Items
     private int coins;
     private bool hasShield = false;
+
+    // Pausa
+    public GameObject pausePanel;
+    private bool isPaused = false;
+    private bool countdown = false;
+
+    // Sonidos
+    public AudioSource audioSource;
+    public AudioClip loseLifeSound;
+    public AudioClip coinSound;
+    public AudioClip powerUp;
+
+    public AudioClip shieldHit;
     
     IEnumerator StartCountDown()
     {
         gameIsRunning = false;
+        countdown = true;
         Time.timeScale = 0f;
         uiController.ShowCountdownText("3");
         yield return new WaitForSecondsRealtime(1f);
@@ -45,6 +60,7 @@ public class GameControlRR : MonoBehaviour
 
         Time.timeScale = 1f;
         gameIsRunning = true;
+        countdown = false;
 
     }
 
@@ -62,6 +78,9 @@ public class GameControlRR : MonoBehaviour
 
     void Update()
     {
+        if (Keyboard.current.escapeKey.wasPressedThisFrame && !countdown)
+            TogglePause();
+        
         if(!gameIsRunning)
             return;
         
@@ -90,6 +109,8 @@ public class GameControlRR : MonoBehaviour
 
         if(!correct)
             SpendLives();
+        else
+            AddCoin();
 
         if(lives <= 0)
             return;
@@ -115,7 +136,17 @@ public class GameControlRR : MonoBehaviour
         time = 0f;
         currentLevel = 1;
         gameIsRunning = false;
+        isPaused = false;
+
+        playerSprite.color = Color.white;
+
+        
+        if (pausePanel != null)
+            pausePanel.SetActive(false);
+
+
         StartCoroutine(StartCountDown());
+
 
         nextTrivia = triviaInterval;
 
@@ -127,18 +158,25 @@ public class GameControlRR : MonoBehaviour
 
     public void ActivateShield()
     {
+        audioSource.PlayOneShot(powerUp);
         hasShield = true;
+        playerSprite.color = Color.cyan;
+
     }
     public void SpendLives()
     {
         if (hasShield)
         {
             hasShield = false;
+            audioSource.PlayOneShot(shieldHit);
+            playerSprite.color = Color.white;
+
             return;
         }
 
         lives = lives - 1;
         uiController.UpdateLives(lives);
+        audioSource.PlayOneShot(loseLifeSound);
 
         if (lives <= 0)
             GameOver();
@@ -149,6 +187,7 @@ public class GameControlRR : MonoBehaviour
     {
         coins = coins + 1;
         uiController.UpdateCoins(coins);
+        audioSource.PlayOneShot(coinSound);
     }
 
 
@@ -157,7 +196,42 @@ public class GameControlRR : MonoBehaviour
         Time.timeScale = 1f;
         gameIsRunning = true;
     }
+    public void TogglePause()
+    {
+        if (triviaPanel.activeSelf)
+            return;
 
+        if (isPaused)
+            ResumeGame();
+        else
+            PauseGame();
+    }
+
+    public void PauseGame()
+    {
+        isPaused = true;
+        gameIsRunning = false;
+        Time.timeScale = 0f;
+
+        if (pausePanel != null)
+            pausePanel.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("GameSceneRoadRush");
+    }
+
+    public void ResumeGame()
+    {
+        isPaused = false;
+        gameIsRunning = true;
+        Time.timeScale = 1f;
+
+        if (pausePanel != null)
+            pausePanel.SetActive(false);
+    }
     public void GameOver()
     {
         gameIsRunning = false;
@@ -171,6 +245,7 @@ public class GameControlRR : MonoBehaviour
     
     public void GoToMenu()
     {
-        //SceneManager.LoadScene("MenuScene");
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MenuRoadRush");
     }
 }

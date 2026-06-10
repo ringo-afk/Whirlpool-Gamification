@@ -6,7 +6,6 @@ public class Player_ControlRR : MonoBehaviour
 {
     public float moveSpeed;
     public Rigidbody2D rig;
-    public SpriteRenderer sr;
     // Rotacion
     public float maxRotation = 20f; // inclinación máxima
     public float rotationSpeed = 5f; // suavidad
@@ -22,6 +21,9 @@ public class Player_ControlRR : MonoBehaviour
     // Carro resbaloso
     public float slipperyMult = 3f;
     public bool isSlippery = false;
+    public AudioSource audioSource;
+    public AudioClip laser;
+
 
 
     // Funciones para aumentar velocidad
@@ -62,6 +64,7 @@ public class Player_ControlRR : MonoBehaviour
         while (canShoot)
         {
             Instantiate(bulletPrefab, shootPoint.position, Quaternion.identity);
+            audioSource.PlayOneShot(laser);
             yield return new WaitForSeconds(fireRate);
         }
     }
