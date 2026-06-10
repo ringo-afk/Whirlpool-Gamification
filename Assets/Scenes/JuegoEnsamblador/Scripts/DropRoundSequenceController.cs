@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class DropRoundSequenceController : MonoBehaviour
 {
     [Header("API")]
-    [SerializeField] private string apiUrl = "https://10.22.146.252:8443/getPrompt/";
+    [SerializeField] private string apiUrl = "https://10.14.255.40:8004/getPrompt/";
     [SerializeField] private int promptId = 14;
     [SerializeField]private int[] promptIds = {11,12,13,14};
     [Header("References")]
