@@ -1,16 +1,29 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class DraggableSetSpawner : MonoBehaviour
 {
     [SerializeField] private Transform[] spawnPoints;
 
     [SerializeField] private Draggable[] draggablePrefabs;
+    [SerializeField] private Draggable draggableTemplate;
 
     [SerializeField] private Transform draggablesRoot;
 
     [SerializeField] private bool avoidDuplicatesInSet = true;
     [SerializeField] private bool spawnOnStart = false;
+    private bool apiControlled;
+
+    public void DisableAutoSpawn()
+    {
+        spawnOnStart = false;
+    }
+
+    public void SetApiControlled(bool enabled)
+    {
+        apiControlled = enabled;
+    }
 
     private void Awake()
     {
@@ -30,6 +43,11 @@ public class DraggableSetSpawner : MonoBehaviour
 
     public void SpawnNextSet()
     {
+        if (apiControlled)
+        {
+            return;
+        }
+
         ClearExistingDraggables();
         SpawnSet();
     }
@@ -51,6 +69,31 @@ public class DraggableSetSpawner : MonoBehaviour
             {
                 Destroy(existing[i].gameObject);
             }
+        }
+    }
+
+    public void SpawnApiOptions(List<ApiAnswer> answers)
+    {
+    ClearExistingDraggables();
+
+    if (answers == null || answers.Count == 0)
+        return;
+
+    answers = answers.OrderBy(x => Random.value).ToList();
+
+    for (int i = 0; i < spawnPoints.Length && i < answers.Count; i++)
+        {
+        Draggable drag = Instantiate(
+            draggableTemplate,
+            spawnPoints[i].position,
+            spawnPoints[i].rotation,
+            draggablesRoot);
+
+        drag.Setup(
+            answers[i].texto,
+            answers[i].correcta,
+            draggableTemplate != null ? draggableTemplate.choiceTag : null
+        );
         }
     }
 

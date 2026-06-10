@@ -1885,9 +1885,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e6275ed2ed42e543b4f8775c798ac8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DropRoundSequenceController
-  apiUrl: https://192.168.1.14:8443/getPrompt/14
-  promptId: 14
-  promptIds: 0b0000000c0000000d0000000e000000
+  apiUrl: https://192.168.1.5:8443/getPrompt/
+  promptId: 11
   promptTextUi: {fileID: 1243745498}
   dropBoxes:
   - {fileID: 1932597077}
@@ -1897,6 +1896,53 @@ MonoBehaviour:
   draggableSpawner1: {fileID: 1998681685}
   draggableSpawner2: {fileID: 1175588102}
   answerTracker: {fileID: 1265798635}
+  rounds:
+  - promptText: "Necesitamos una campa\xF1a de email marketing para la nueva l\xEDnea
+      de lavadoras de carga frontal que ahorran agua."
+    requiredAnswerIdsForBoxes:
+    - 1
+    - 5
+    - 9
+    draggableOptionsBox1:
+    - {fileID: 2581708761888200260, guid: e1fce10bde54bbb41b460ab1e1ee3004, type: 3}
+    - {fileID: 4152371482518986531, guid: 291e010fb62ee464fb20e4436f296ee1, type: 3}
+    - {fileID: 1480387056466589747, guid: 862653233f72ed4458f34a39856cbf5d, type: 3}
+    - {fileID: 3434116986049584976, guid: 27574d5cc23445244ad6e0a1c66cc869, type: 3}
+    draggableOptionsBox2:
+    - {fileID: 5861768915179825485, guid: b6d5863db9eca724fa15262820d6ce6f, type: 3}
+    - {fileID: 7132178942168587485, guid: e0df67bd1006a8b4197f7cdff97d8362, type: 3}
+    - {fileID: 7022641278519381348, guid: 1ab288055833e004c8bb3665ed60fd36, type: 3}
+    - {fileID: 3946858040609301702, guid: aae18e1f4eaac5749af86faa2efe7060, type: 3}
+    - {fileID: 3946858040609301702, guid: 079b9668fe88c5f48944de70eec21e4a, type: 3}
+    draggableOptionsBox3:
+    - {fileID: 8264182702133714842, guid: 7e755281e5aa0b145bfcc2d64d81cbc1, type: 3}
+    - {fileID: 527707975625977954, guid: 8710917fba69f4f479d2529d3da1f91d, type: 3}
+    - {fileID: 198502924646465498, guid: 3bab9d2be75523a4886921a3a942b0bd, type: 3}
+    - {fileID: 214667618269332009, guid: 9e645144164f6834e9c7f02313a67d08, type: 3}
+    - {fileID: 198502924646465498, guid: 623be0941aec3e64fb217c16a304520f, type: 3}
+  - promptText: "Necesitamos una campa\xF1a de email marketing para la nueva l\xEDnea
+      de lavadoras de carga frontal que ahorran agua."
+    requiredAnswerIdsForBoxes:
+    - 1
+    - 5
+    - 9
+    draggableOptionsBox1:
+    - {fileID: 2581708761888200260, guid: e1fce10bde54bbb41b460ab1e1ee3004, type: 3}
+    - {fileID: 4152371482518986531, guid: 291e010fb62ee464fb20e4436f296ee1, type: 3}
+    - {fileID: 1480387056466589747, guid: 862653233f72ed4458f34a39856cbf5d, type: 3}
+    - {fileID: 3434116986049584976, guid: 27574d5cc23445244ad6e0a1c66cc869, type: 3}
+    - {fileID: 1480387056466589747, guid: 157216f73c7d0ac41947f7f020d65c34, type: 3}
+    draggableOptionsBox2:
+    - {fileID: 5861768915179825485, guid: b6d5863db9eca724fa15262820d6ce6f, type: 3}
+    - {fileID: 7132178942168587485, guid: e0df67bd1006a8b4197f7cdff97d8362, type: 3}
+    - {fileID: 7022641278519381348, guid: 1ab288055833e004c8bb3665ed60fd36, type: 3}
+    - {fileID: 3946858040609301702, guid: aae18e1f4eaac5749af86faa2efe7060, type: 3}
+    draggableOptionsBox3:
+    - {fileID: 8264182702133714842, guid: 7e755281e5aa0b145bfcc2d64d81cbc1, type: 3}
+    - {fileID: 527707975625977954, guid: 8710917fba69f4f479d2529d3da1f91d, type: 3}
+    - {fileID: 198502924646465498, guid: 3bab9d2be75523a4886921a3a942b0bd, type: 3}
+    - {fileID: 214667618269332009, guid: 9e645144164f6834e9c7f02313a67d08, type: 3}
+  loopRounds: 0
 --- !u!4 &381194910
 Transform:
   m_ObjectHideFlags: 0
@@ -5667,7 +5713,7 @@ MonoBehaviour:
   - {fileID: 527707975625977954, guid: 8710917fba69f4f479d2529d3da1f91d, type: 3}
   - {fileID: 198502924646465498, guid: 3bab9d2be75523a4886921a3a942b0bd, type: 3}
   - {fileID: 214667618269332009, guid: 9e645144164f6834e9c7f02313a67d08, type: 3}
-  draggableTemplate: {fileID: 527707975625977954, guid: 8710917fba69f4f479d2529d3da1f91d, type: 3}
+  draggableTemplate: {fileID: 7132178942168587485, guid: e0df67bd1006a8b4197f7cdff97d8362, type: 3}
   draggablesRoot: {fileID: 0}
   avoidDuplicatesInSet: 1
   spawnOnStart: 0
@@ -6066,8 +6112,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 20.5
+  m_fontSizeBase: 20.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -9453,7 +9499,7 @@ MonoBehaviour:
   - {fileID: 1480387056466589747, guid: 862653233f72ed4458f34a39856cbf5d, type: 3}
   - {fileID: 3434116986049584976, guid: 27574d5cc23445244ad6e0a1c66cc869, type: 3}
   - {fileID: 1480387056466589747, guid: 157216f73c7d0ac41947f7f020d65c34, type: 3}
-  draggableTemplate: {fileID: 4152371482518986531, guid: 291e010fb62ee464fb20e4436f296ee1, type: 3}
+  draggableTemplate: {fileID: 7132178942168587485, guid: e0df67bd1006a8b4197f7cdff97d8362, type: 3}
   draggablesRoot: {fileID: 0}
   avoidDuplicatesInSet: 1
   spawnOnStart: 1

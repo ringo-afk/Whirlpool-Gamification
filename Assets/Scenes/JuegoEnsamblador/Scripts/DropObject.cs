@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Collections;
 
 public class DropObject : MonoBehaviour
 {
@@ -13,6 +12,8 @@ public class DropObject : MonoBehaviour
     [SerializeField] private string requiredAnswerId = "";
     [SerializeField] private DropAnswerTracker answerTracker;
     private bool isCurrentlyCorrect;
+    private bool isBoxFilled;
+    private Draggable placedDraggable;
 
     [Header("Cleanup after correct drop")]
     [Tooltip("If true, when a draggable is accepted here, all other draggable objects in the group will be deleted.")]
@@ -50,19 +51,34 @@ public class DropObject : MonoBehaviour
         }
     }
 
-    public void ReceiveDrop(Draggable droppedObject)
+    public bool ReceiveDrop(Draggable droppedObject)
     {
-        if (droppedObject == null)
+        if (droppedObject == null || isBoxFilled)
         {
-            return;
+            return false;
         }
 
         if (!AcceptsTag(droppedObject))
         {
-            return;
+            return false;
         }
 
-        bool isCorrectDrop = IsCorrectAnswer(droppedObject);
+        if (!IsCorrectAnswer(droppedObject))
+        {
+            Debug.Log(
+                "Respuesta incorrecta en "
+                + name
+                + ": "
+                + droppedObject.choiceTag
+                + " | IsCorrect="
+                + droppedObject.IsCorrect);
+
+            return false;
+        }
+
+        isBoxFilled = true;
+        isCurrentlyCorrect = true;
+        placedDraggable = droppedObject;
 
         if (snapDroppedObject)
         {
@@ -81,25 +97,36 @@ public class DropObject : MonoBehaviour
             DeleteOtherDraggables(droppedObject);
         }
 
-        isCurrentlyCorrect = isCorrectDrop;
-        if (answerTracker != null)
-        {
-            answerTracker.NotifyDropChanged();
-        }
+        LockPlacedDraggable(droppedObject);
 
-        onDropped?.Invoke();
-        StartCoroutine(NotifyFilledNextFrame());
+        OnDropFilled?.Invoke();
+        return true;
     }
 
-    private IEnumerator NotifyFilledNextFrame()
-{
-    yield return null;
-    OnDropFilled?.Invoke();
-}
+    private static void LockPlacedDraggable(Draggable droppedObject)
+    {
+        if (droppedObject == null)
+        {
+            return;
+        }
+
+        Collider2D collider = droppedObject.GetComponent<Collider2D>();
+        if (collider != null)
+        {
+            collider.enabled = false;
+        }
+
+        droppedObject.enabled = false;
+    }
 
     public bool IsCurrentlyCorrect()
     {
         return isCurrentlyCorrect;
+    }
+
+    public bool CanAcceptDrop(Draggable droppedObject)
+    {
+        return droppedObject != null && !isBoxFilled && AcceptsTag(droppedObject);
     }
 
     public void SetRequiredAnswerId(string newRequiredAnswerId)
@@ -110,17 +137,29 @@ public class DropObject : MonoBehaviour
     public void ResetDropState()
     {
         isCurrentlyCorrect = false;
+        isBoxFilled = false;
+
+        if (placedDraggable != null)
+        {
+            Destroy(placedDraggable.gameObject);
+            placedDraggable = null;
+        }
     }
 
     private void DeleteOtherDraggables(Draggable droppedObject)
     {
         if (droppedObject == null) return;
-        Transform searchRoot = deleteOtherDraggablesInSameParent ? droppedObject.transform.parent : null;
 
+        Transform searchRoot = droppedObject.transform.parent;
         Draggable[] candidates;
+
         if (searchRoot != null)
         {
             candidates = searchRoot.GetComponentsInChildren<Draggable>(true);
+        }
+        else if (deleteOtherDraggablesInSameParent)
+        {
+            return;
         }
         else
         {
@@ -182,6 +221,11 @@ public class DropObject : MonoBehaviour
         if (string.IsNullOrWhiteSpace(requiredAnswerId))
         {
             return true;
+        }
+
+        if (requiredAnswerId == "correct")
+        {
+            return droppedObject.IsCorrect;
         }
 
         return requiredAnswerId == droppedObject.answerId;

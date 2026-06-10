@@ -1,131 +1,197 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
+using System.Collections;
+using System.Collections.Generic;
 
 public class DropRoundSequenceController : MonoBehaviour
 {
-    [System.Serializable]
-    private class RoundData
-    {
-        [TextArea(2, 6)]
-        public string promptText;
-        public string[] requiredAnswerIdsForBoxes;
-        public Draggable[] draggableOptionsBox1; // ← nuevo
-        public Draggable[] draggableOptionsBox2;
-        public Draggable[] draggableOptionsBox3;
-    }
-
+    [Header("API")]
+    [SerializeField] private string apiUrl = "https://10.22.146.252:8443/getPrompt/";
+    [SerializeField] private int promptId = 14;
+    [SerializeField]private int[] promptIds = {11,12,13,14};
     [Header("References")]
     [SerializeField] private TextMeshProUGUI promptTextUi;
     [SerializeField] private DropObject[] dropBoxes;
-    [SerializeField] private DraggableSetSpawner draggableSpawner0; // caja 1 (al inicio)
-    [SerializeField] private DraggableSetSpawner draggableSpawner1; // caja 2
-    [SerializeField] private DraggableSetSpawner draggableSpawner2; // caja 3
+
+    [SerializeField] private DraggableSetSpawner draggableSpawner0;
+    [SerializeField] private DraggableSetSpawner draggableSpawner1;
+    [SerializeField] private DraggableSetSpawner draggableSpawner2;
+
     [SerializeField] private DropAnswerTracker answerTracker;
 
-    [Header("Rounds")]
-    [SerializeField] private RoundData[] rounds;
-    [SerializeField] private bool loopRounds = true;
-
-    private int currentRoundIndex = -1;
     private int filledBoxCount = 0;
+
+    private List<ApiAnswer> contextoOptions;
+    private List<ApiAnswer> tareaOptions;
 
     private void Awake()
     {
         if (answerTracker == null)
             answerTracker = FindObjectOfType<DropAnswerTracker>();
+
+        DisableLegacyDropEvents();
+    }
+
+    private void DisableLegacyDropEvents()
+    {
+        foreach (var box in dropBoxes)
+        {
+            if (box != null)
+                box.onDropped.RemoveAllListeners();
+        }
+
+        draggableSpawner0?.DisableAutoSpawn();
+        draggableSpawner1?.DisableAutoSpawn();
+        draggableSpawner2?.DisableAutoSpawn();
+
+        draggableSpawner0?.SetApiControlled(true);
+        draggableSpawner1?.SetApiControlled(true);
+        draggableSpawner2?.SetApiControlled(true);
     }
 
     private void OnEnable()
     {
         foreach (var box in dropBoxes)
-            if (box != null) box.OnDropFilled += HandleBoxFilled;
+        {
+            if (box != null)
+                box.OnDropFilled += HandleBoxFilled;
+        }
     }
 
     private void OnDisable()
     {
         foreach (var box in dropBoxes)
-            if (box != null) box.OnDropFilled -= HandleBoxFilled;
+        {
+            if (box != null)
+                box.OnDropFilled -= HandleBoxFilled;
+        }
     }
 
     private void Start()
+    {promptId = promptIds[Random.Range(0, promptIds.Length)];
+
+    StartCoroutine(LoadPromptFromApi());
+    }
+
+    private IEnumerator LoadPromptFromApi()
     {
-        LoadRound(0);
+        UnityWebRequest request =
+            UnityWebRequest.Get(apiUrl + promptId);
+
+        request.certificateHandler =
+            new BypassCertificate();
+
+        yield return request.SendWebRequest();
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError(request.error);
+            yield break;
+        }
+
+        Debug.Log(request.downloadHandler.text);
+
+        PromptResponse prompt =
+            JsonUtility.FromJson<PromptResponse>(
+                request.downloadHandler.text);
+
+        if (prompt == null)
+        {
+            Debug.LogError("No se pudo parsear PromptResponse");
+            yield break;
+        }
+
+        if (promptTextUi != null)
+            promptTextUi.text = prompt.Prompt;
+
+        ApiAnswer[] answers =
+            JsonHelper.FromJson<ApiAnswer>(
+                prompt.Respuestas);
+
+        if (answers == null || answers.Length < 12)
+        {
+            Debug.LogError(
+                "Se esperaban al menos 12 respuestas. Llegaron: "
+                + (answers == null ? 0 : answers.Length));
+
+            yield break;
+        }
+
+        Debug.Log("Respuestas cargadas: " + answers.Length);
+        LogAnswerGroup("Rol", answers, 0, 4);
+        LogAnswerGroup("Contexto", answers, 4, 4);
+        LogAnswerGroup("Tarea", answers, 8, 4);
+
+        foreach (var box in dropBoxes)
+        {
+            if (box == null) continue;
+
+            box.SetRequiredAnswerId("correct");
+            box.ResetDropState();
+        }
+
+        filledBoxCount = 0;
+
+        List<ApiAnswer> rol =
+            new List<ApiAnswer>(answers).GetRange(0, 4);
+
+        contextoOptions =
+            new List<ApiAnswer>(answers).GetRange(4, 4);
+
+        tareaOptions =
+            new List<ApiAnswer>(answers).GetRange(8, 4);
+
+        answerTracker?.BeginNewRound();
+
+        draggableSpawner1?.SpawnApiOptions(null);
+        draggableSpawner2?.SpawnApiOptions(null);
+        draggableSpawner0.SpawnApiOptions(rol);
     }
 
     private void HandleBoxFilled()
     {
         filledBoxCount++;
 
+        Debug.Log(
+            "Caja completada. Total: "
+            + filledBoxCount);
+
         if (filledBoxCount == 1)
-            draggableSpawner1?.SpawnNextSet();
+        {
+            Debug.Log("Spawneando opciones de Contexto");
+            draggableSpawner1.SpawnApiOptions(
+                contextoOptions);
+        }
         else if (filledBoxCount == 2)
-            draggableSpawner2?.SpawnNextSet();
+        {
+            draggableSpawner2.SpawnApiOptions(
+                tareaOptions);
+        }
         else if (filledBoxCount >= 3)
-            EvaluateAndAdvance();
+        {
+            answerTracker?.RecordRoundComplete();
+            PromptCompleted();
+        }
     }
 
-    private void EvaluateAndAdvance()
+    private static void LogAnswerGroup(string label, ApiAnswer[] answers, int start, int count)
     {
-        answerTracker?.NotifyDropChanged();
-
-        int nextIndex = currentRoundIndex + 1;
-
-        if (nextIndex >= rounds.Length)
+        for (int i = 0; i < count; i++)
         {
-            if (!loopRounds) return;
-            nextIndex = 0;
+            ApiAnswer answer = answers[start + i];
+            Debug.Log(
+                label + " [" + i + "]: "
+                + answer.texto + " | correcta=" + answer.correcta);
         }
-
-        LoadRound(nextIndex);
     }
 
-    private void LoadRound(int roundIndex)
+    private void PromptCompleted()
     {
-        if (rounds == null || rounds.Length == 0) return;
-        if (roundIndex < 0 || roundIndex >= rounds.Length) return;
+        Debug.Log("Prompt completado correctamente");
 
-        currentRoundIndex = roundIndex;
-        filledBoxCount = 0;
+        promptId = promptIds[Random.Range(0, promptIds.Length)];
 
-        RoundData round = rounds[roundIndex];
-        if (round == null) return;
-
-        if (promptTextUi != null)
-            promptTextUi.text = round.promptText;
-
-        ApplyBoxAnswers(round.requiredAnswerIdsForBoxes);
-
-        // Preparar spawners 1 y 2 sin spawnear aún
-        if (draggableSpawner1 != null)
-            draggableSpawner1.SetDraggablePrefabs(round.draggableOptionsBox2);
-
-        if (draggableSpawner2 != null)
-            draggableSpawner2.SetDraggablePrefabs(round.draggableOptionsBox3);
-
-        // Spawner 0 spawnea inmediatamente al cargar la ronda
-        if (draggableSpawner0 != null)
-        {
-            draggableSpawner0.SetDraggablePrefabs(round.draggableOptionsBox1);
-            draggableSpawner0.SpawnNextSet();
-        }
-
-        answerTracker?.BeginNewRound();
-    }
-
-    private void ApplyBoxAnswers(string[] requiredAnswerIds)
-    {
-        if (dropBoxes == null) return;
-
-        for (int i = 0; i < dropBoxes.Length; i++)
-        {
-            if (dropBoxes[i] == null) continue;
-
-            string requiredId = (requiredAnswerIds != null && i < requiredAnswerIds.Length)
-                ? requiredAnswerIds[i]
-                : string.Empty;
-
-            dropBoxes[i].SetRequiredAnswerId(requiredId);
-            dropBoxes[i].ResetDropState();
-        }
+        StartCoroutine(LoadPromptFromApi());
     }
 }
