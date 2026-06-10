@@ -15,7 +15,7 @@ public class TriviaController : MonoBehaviour
     private bool answered = false;
     private int correctAnswer;
 
-    private string apiBaseUrl = "https://127.0.0.1:8001/getPrompt/"; 
+    private string apiBaseUrl = "https://10.14.255.40:8010/getPrompt/"; 
     private List<int> preguntasDisponibles = new List<int>();
         
     [Serializable]

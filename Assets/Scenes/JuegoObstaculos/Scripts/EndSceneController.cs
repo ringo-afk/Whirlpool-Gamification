@@ -10,6 +10,7 @@ public class EndSceneController : MonoBehaviour
     public TextMeshProUGUI coinsText;
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI livesText;
+    [SerializeField] private int juegoId = 5;
 
     void Start()
     {
@@ -34,14 +35,14 @@ public class EndSceneController : MonoBehaviour
         return string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, milliseconds);
     }
 
-    /*
+    
     private IEnumerator Guardar(float time, int coins)
     {
         int kilometrosObtenidos = Mathf.FloorToInt(time);
 
         PartidaData data = new PartidaData
         {
-            usuario_id = GameControl.Instance.usuarioIdActual,
+            usuario_id = PlayerPrefs.GetInt("IDUsuario", 1),
             juego_id = juegoId,
             kilometros = kilometrosObtenidos,
             monedas_ganadas = coins
@@ -67,7 +68,7 @@ public class EndSceneController : MonoBehaviour
             }
         }
 
-    }*/
+    }
 
 
     public void StartGame()
@@ -81,11 +82,3 @@ public class EndSceneController : MonoBehaviour
     }
 }
 
-[System.Serializable]
-public class PartidaData
-{
-    public int usuario_id;
-    public int juego_id;
-    public int kilometros;
-    public int monedas_ganadas;
-}
