@@ -40,6 +40,7 @@ public class GameControl : MonoBehaviour
         panelPausa.SetActive(false);
         Pause(false);
         Instance.monedas = 0;
+        usuarioIdActual = PlayerPrefs.GetInt("UsuarioLogueado");
     }
 
     public void Pause(bool pause)
@@ -68,7 +69,6 @@ public class GameControl : MonoBehaviour
         SceneManager.LoadScene("MenuCarreras");
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Keyboard.current.escapeKey.wasPressedThisFrame)
