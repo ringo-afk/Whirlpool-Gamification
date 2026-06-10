@@ -44,6 +44,9 @@ public class FinishLine : MonoBehaviour
     {
         float tiempoTranscurrido = GameControl.Instance.tiempoInicio - GameControl.Instance.timer.tiempo;
         int kilometrosObtenidos = Mathf.FloorToInt(tiempoTranscurrido);
+        PlayerPrefs.SetFloat("Tiempo", tiempoTranscurrido);
+        PlayerPrefs.SetInt("Kilometros", kilometrosObtenidos);
+        PlayerPrefs.SetInt("Monedas", GameControl.Instance.monedas);
 
         PartidaData data = new PartidaData
         {
