@@ -102,3 +102,7 @@ InitTestScene*.unity*
 
 /[Aa]ssets/Fonts/**/*.asset
 /[Aa]ssets/Fonts/**/*.asset.meta
+
+# Ignorar fuentes autogeneradas de TextMesh Pro
+/[Aa]ssets/TextMesh Pro/**/Fonts & Materials/
+/[Aa]ssets/TextMesh Pro/**/Fonts & Materials.meta
