@@ -3349,8 +3349,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EndControllerCarreras
   km: {fileID: 982423062}
-  tiempo: {fileID: 1000884615}
-  monedas: {fileID: 1682216704}
 --- !u!1 &757352878
 GameObject:
   m_ObjectHideFlags: 0
@@ -3777,7 +3775,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 446, y: -129}
+  m_AnchoredPosition: {x: 517, y: -129}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1000884615
@@ -3866,7 +3864,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 82.28671, w: 29.03544}
+  m_margin: {x: 0, y: 0, z: 166.66335, w: 29.03544}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
