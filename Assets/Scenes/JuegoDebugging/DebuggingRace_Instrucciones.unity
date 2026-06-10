@@ -387,11 +387,16 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "C\xF3mo jugar:\n- Responde prompts correctamente para recibir boost.\n-
-    Si respondes mal, la computadora recibe boost.\n- Esquiva obst\xE1culos para
-    no perder vidas.\n- Recoge power-ups para ganar puntos y avanzar m\xE1s r\xE1pido.\nVictoria:\nGanas
-    si llegas primero a la meta.\nDerrota:\nPierdes si la computadora llega primero
-    o si te quedas sin vidas."
+  m_text: "C\xF3mo jugar:\n\nDurante la carrera aparecer\xE1n prompts incompletos.\nElige
+    la palabra que haga que el prompt sea m\xE1s claro, profesional y coherente.\nSi
+    respondes correctamente, tu carro recibe un boost de velocidad.\nSi respondes
+    incorrectamente, la computadora recibe el boost.\nEsquiva los obst\xE1culos para
+    no perder corazones.\nRecoge los power-ups para ganar puntos y avanzar m\xE1s
+    r\xE1pido.\n\nCondici\xF3n de victoria:\nGanas si tu carro llega a la meta antes
+    que la computadora y a\xFAn tienes vidas.\n\nCondici\xF3n de derrota:\nPierdes
+    si la computadora llega primero o si te quedas sin corazones.\n\nRecompensa:\nAl
+    final se mostrar\xE1 tu resultado, tiempo, puntos, respuestas correctas y una
+    recompensa seg\xFAn tu desempe\xF1o."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -418,8 +423,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 10.5
+  m_fontSizeBase: 10.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3209,9 +3214,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Objetivo:\nGana la carrera llegando antes que la computadora.\nControles:\n-
-    Mu\xE9vete con WASD o flechas.\n- Da click en la respuesta correcta.\n- Presiona
-    ESC o el bot\xF3n de pausa para pausar."
+  m_text: "Objetivo:\nGana la carrera antes que la computadora mientras aprendes
+    a crear prompts m\xE1s claros y \xFAtiles para situaciones relacionadas con Whirlpool.\n\nControles:\n\nMu\xE9vete
+    con WASD o con las flechas del teclado.\nDa click sobre la respuesta que complete
+    mejor el prompt.\nPresiona ESC o el bot\xF3n de pausa para pausar el juego."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -3238,8 +3244,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

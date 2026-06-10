@@ -1,9 +1,11 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Networking;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Físicas del Vehículo")]
     [SerializeField] private SpriteRenderer sr;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float accel = 15f;
@@ -19,148 +21,138 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        transform.eulerAngles = new Vector3(0,0,270);
+        transform.eulerAngles = new Vector3(0, 0, 270);
         groundMult = 1f;
         dead = false;
 
+        StartCoroutine(ObtenerYAplicarMejoras());
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator ObtenerYAplicarMejoras()
     {
-        if(Time.deltaTime == 0) return;
-        rb.angularVelocity *= 0.9f;
-        //float velocityAngle = Mathf.Rad2Deg*(Mathf.Deg2Rad*450 + (float)Math.Atan2(-rb.linearVelocityX,rb.linearVelocityY)) % (Mathf.PI * 2);
-        if(Vector2.Dot(rb.linearVelocity.normalized, transform.up) < 0)
-        {
-            directionMult = -1;
-        }
-        else
-        {
-            directionMult = 1;
-        }
+        string url = $"{GameControl.Instance.apiBaseUrl}usuarios/{GameControl.Instance.usuarioIdActual}/mejoras/equipadas";
 
-        if(!dead){
-            if (Keyboard.current.spaceKey.isPressed)
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+        {
+            webRequest.certificateHandler = new BypassCertificate();
+
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
             {
-                rb.linearVelocityX *= Mathf.Lerp(0.998f,friction,(test/driftQuotient)*Mathf.Abs(Vector2.Dot(rb.linearVelocity.normalized, transform.right)));
-                rb.linearVelocityY *= Mathf.Lerp(0.998f,friction,(test/driftQuotient)*Mathf.Abs(Vector2.Dot(rb.linearVelocity.normalized, transform.right)));
-                rb.linearVelocity = Vector2.Lerp(rb.linearVelocity.normalized, transform.up*directionMult, (grip/driftQuotient) * groundMult *Time.deltaTime).normalized * rb.linearVelocity.magnitude;
+                Debug.LogError("Error API: " + webRequest.error);
             }
             else
             {
-                rb.linearVelocityX *= Mathf.Lerp(0.998f,friction,test*Mathf.Abs(Vector2.Dot(rb.linearVelocity.normalized, transform.right)));
-                rb.linearVelocityY *= Mathf.Lerp(0.998f,friction,test*Mathf.Abs(Vector2.Dot(rb.linearVelocity.normalized, transform.right)));
-                rb.linearVelocity = Vector2.Lerp(rb.linearVelocity.normalized, transform.up*directionMult, grip * groundMult * Time.deltaTime).normalized * rb.linearVelocity.magnitude;
-            }
-            
+                string jsonResponse = webRequest.downloadHandler.text;
+                ApiResponseMejoras response = JsonUtility.FromJson<ApiResponseMejoras>(jsonResponse);
 
-            //Debug.Log(Mathf.Abs(Mathf.Sin(velocityAngle - ((Mathf.PI / 180) * (90 + transform.eulerAngles.z)))));
+                if (response != null && response.success)
+                {
+                    AplicarModificadores(response.modificadores_acumulados);
+                }
+            }
+        }
+    }
+
+    private void AplicarModificadores(Modificadores mods)
+    {
+        maxSpeed += mods.MaxSpeed;
+        accel += mods.Accel;
+        friction += mods.Friction;
+        grip += mods.Grip;
+        driftQuotient += mods.DriftQuotient;
+        turnSpeed += mods.TurnSpeed;
+    }
+
+    void Update()
+    {
+        if (Time.deltaTime == 0) return;
+        rb.angularVelocity *= 0.9f;
+        
+        directionMult = Vector2.Dot(rb.linearVelocity.normalized, transform.up) < 0 ? -1 : 1;
+
+        if (!dead)
+        {
+            if (Keyboard.current.spaceKey.isPressed)
+            {
+                rb.linearVelocityX *= Mathf.Lerp(0.998f, friction, (test / driftQuotient) * Mathf.Abs(Vector2.Dot(rb.linearVelocity.normalized, transform.right)));
+                rb.linearVelocityY *= Mathf.Lerp(0.998f, friction, (test / driftQuotient) * Mathf.Abs(Vector2.Dot(rb.linearVelocity.normalized, transform.right)));
+                rb.linearVelocity = Vector2.Lerp(rb.linearVelocity.normalized, transform.up * directionMult, (grip / driftQuotient) * groundMult * Time.deltaTime).normalized * rb.linearVelocity.magnitude;
+            }
+            else
+            {
+                rb.linearVelocityX *= Mathf.Lerp(0.998f, friction, test * Mathf.Abs(Vector2.Dot(rb.linearVelocity.normalized, transform.right)));
+                rb.linearVelocityY *= Mathf.Lerp(0.998f, friction, test * Mathf.Abs(Vector2.Dot(rb.linearVelocity.normalized, transform.right)));
+                rb.linearVelocity = Vector2.Lerp(rb.linearVelocity.normalized, transform.up * directionMult, grip * groundMult * Time.deltaTime).normalized * rb.linearVelocity.magnitude;
+            }
+
             if (Keyboard.current.upArrowKey.isPressed)
             {
-                //rb.linearVelocityX += (float)(accel*Math.Cos((Math.PI / 180) * (90 + transform.eulerAngles.z)));
-                //rb.linearVelocityY += (float)(accel*Math.Sin((Math.PI / 180) * (90 + transform.eulerAngles.z)));
-                if (Keyboard.current.spaceKey.isPressed)
-                {
-                    rb.linearVelocity += (Vector2)transform.up * (accel/(driftQuotient/3)) * groundMult * Time.deltaTime;
-                }
-                else
-                {
-                    rb.linearVelocity += (Vector2)transform.up * accel * groundMult * Time.deltaTime;
-                }
-                
+                rb.linearVelocity += (Vector2)transform.up * (Keyboard.current.spaceKey.isPressed ? (accel / (driftQuotient / 3)) : accel) * groundMult * Time.deltaTime;
             }
-            if (Keyboard.current.leftArrowKey.isPressed)
-            {
-                transform.eulerAngles += new Vector3(0,0,turnSpeed * Time.deltaTime);
-            }
-            if (Keyboard.current.rightArrowKey.isPressed)
-            {
-                transform.eulerAngles -= new Vector3(0,0,turnSpeed * Time.deltaTime);
-            }
-
-            if (Keyboard.current.downArrowKey.isPressed)
-            {
-                /*if(Vector2.Dot(rb.linearVelocity.normalized, transform.right) > 0)
-                {
-                    rb.linearVelocityX *= Mathf.Lerp(0.998f,friction,Mathf.Abs(Vector2.Dot(rb.linearVelocity.normalized, transform.right)));
-                    rb.linearVelocityY *= Mathf.Lerp(0.998f,friction,Mathf.Abs(Vector2.Dot(rb.linearVelocity.normalized, transform.right)));
-                }
-                else
-                {
-                    rb.linearVelocityX -= (float)((accel/3)*Math.Cos((Math.PI / 180) * (90 + transform.eulerAngles.z)));
-                    rb.linearVelocityY -= (float)((accel/3)*Math.Sin((Math.PI / 180) * (90 + transform.eulerAngles.z)));
-                }*/
-                rb.linearVelocity -= (Vector2)transform.up * (accel * groundMult/3) * Time.deltaTime;
-            }
+            
+            if (Keyboard.current.leftArrowKey.isPressed) transform.eulerAngles += new Vector3(0, 0, turnSpeed * Time.deltaTime);
+            if (Keyboard.current.rightArrowKey.isPressed) transform.eulerAngles -= new Vector3(0, 0, turnSpeed * Time.deltaTime);
+            if (Keyboard.current.downArrowKey.isPressed) rb.linearVelocity -= (Vector2)transform.up * (accel * groundMult / 3) * Time.deltaTime;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Normal Road"))
-        {
-            groundMult = 0.4f;
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Boost"))
-        {
-            rb.linearVelocity += (Vector2)transform.up.normalized * 10 * directionMult;
-        }
-    }
-
+    private void OnTriggerExit2D(Collider2D collision) => groundMult = collision.gameObject.CompareTag("Normal Road") ? 0.4f : groundMult;
+    private void OnTriggerEnter2D(Collider2D collision) { if (collision.gameObject.CompareTag("Boost")) rb.linearVelocity += (Vector2)transform.up.normalized * 10 * directionMult; }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Normal Road"))
-        {
-            groundMult = 1f;
-        }
-
-        if (collision.gameObject.CompareTag("Water") && dead == false)
-        {
-            dead = true;
-            StartCoroutine(RespawnSequence());
-        }
+        if (collision.gameObject.CompareTag("Normal Road")) groundMult = 1f;
+        if (collision.gameObject.CompareTag("Water") && !dead) { dead = true; StartCoroutine(RespawnSequence()); }
     }
-        
-        private Vector3 GetClosestRespawnPoint()
+
+    private Vector3 GetClosestRespawnPoint()
     {
         GameObject[] respawnPoints = GameObject.FindGameObjectsWithTag("Respawn");
-
-        Vector3 closestPoint = new Vector3();
-        float shortestDistance = Mathf.Infinity;
-        Vector3 currentPosition = transform.position;
-
-        foreach (GameObject point in respawnPoints)
+        Vector3 closest = Vector3.zero;
+        float dist = Mathf.Infinity;
+        foreach (var point in respawnPoints)
         {
-            float distanceToPoint = (point.transform.position - currentPosition).sqrMagnitude;
-
-            if (distanceToPoint < shortestDistance)
-            {
-                shortestDistance = distanceToPoint;
-                closestPoint = point.transform.position;
-            }
+            float d = (point.transform.position - transform.position).sqrMagnitude;
+            if (d < dist) { dist = d; closest = point.transform.position; }
         }
-        return closestPoint;
+        return closest;
     }
 
     private IEnumerator RespawnSequence()
     {
-        while(dead){
+        while (dead)
+        {
             rb.linearVelocity /= 1.005f;
-            sr.color = new Color(r: sr.color.r, g: sr.color.g,b: sr.color.b,a: sr.color.a-(1f * Time.deltaTime));
-                if(sr.color.a < 0f)
-                {
-                    dead = false;
-                    sr.color = new Color(r: sr.color.r, g: sr.color.g,b: sr.color.b,a: 1f);
-                    rb.linearVelocity = new Vector2(0,0);
-                    transform.position = GetClosestRespawnPoint();
-                }
-                yield return null;
+            sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, sr.color.a - (1f * Time.deltaTime));
+            if (sr.color.a < 0f)
+            {
+                dead = false;
+                sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 1f);
+                rb.linearVelocity = Vector2.zero;
+                transform.position = GetClosestRespawnPoint();
+            }
+            yield return null;
         }
-        yield return null;
     }
 }
+
+[System.Serializable]
+public class Modificadores
+{
+    public float MaxSpeed;
+    public float Accel;
+    public float Friction;
+    public float Grip;
+    public float DriftQuotient;
+    public float TurnSpeed;
+}
+
+[System.Serializable]
+public class ApiResponseMejoras
+{
+    public bool success;
+    public Modificadores modificadores_acumulados;
+}
+
+public class BypassCertificate2 : CertificateHandler { protected override bool ValidateCertificate(byte[] certificateData) => true; }

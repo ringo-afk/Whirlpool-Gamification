@@ -1,9 +1,16 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using System.Text;
+using UnityEngine.Networking;
 
 public class GameControlDebugging : MonoBehaviour
 {
     public static GameControlDebugging Instance;
+
+    [Header("API")]
+    public string resultadoApiUrl = "https://10.14.255.40:8002/api/debuggingrace/resultado";
+    public int idUsuario = 1;
 
     [Header("Datos del jugador")]
     public int lives = 5;
@@ -122,7 +129,7 @@ public class GameControlDebugging : MonoBehaviour
         PlayerPrefs.SetString("DebuggingResult", "Ganaste");
         SaveFinalData();
 
-        SceneManager.LoadScene("DebuggingRace_FinalScene");
+        StartCoroutine(SendResultAndGoFinal());
     }
 
     private void LoseGame()
@@ -132,7 +139,7 @@ public class GameControlDebugging : MonoBehaviour
         PlayerPrefs.SetString("DebuggingResult", "Perdiste");
         SaveFinalData();
 
-        SceneManager.LoadScene("DebuggingRace_FinalScene");
+        StartCoroutine(SendResultAndGoFinal());
     }
 
     private void SaveFinalData()
@@ -142,5 +149,38 @@ public class GameControlDebugging : MonoBehaviour
         PlayerPrefs.SetInt("DebuggingRewardPoints", rewardPoints);
         PlayerPrefs.SetFloat("DebuggingTime", gameTime);
         PlayerPrefs.Save();
+    }
+
+    IEnumerator SendResultAndGoFinal()
+    {
+        ResultadoDebuggingAPI resultado = new ResultadoDebuggingAPI();
+
+        resultado.idUsuario = idUsuario;
+        resultado.kilometros = playerProgress;
+        resultado.monedasGanadas = rewardPoints;
+
+        string json = JsonUtility.ToJson(resultado);
+
+        UnityWebRequest web = new UnityWebRequest(resultadoApiUrl, "POST");
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
+
+        web.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        web.downloadHandler = new DownloadHandlerBuffer();
+        web.SetRequestHeader("Content-Type", "application/json");
+        web.certificateHandler = new ForceAcceptAll();
+
+        yield return web.SendWebRequest();
+
+        if (web.result != UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Error guardando resultado: " + web.error);
+            Debug.Log("Respuesta API: " + web.downloadHandler.text);
+        }
+        else
+        {
+            Debug.Log("Resultado guardado en BD: " + web.downloadHandler.text);
+        }
+
+        SceneManager.LoadScene("DebuggingRace_FinalScene");
     }
 }

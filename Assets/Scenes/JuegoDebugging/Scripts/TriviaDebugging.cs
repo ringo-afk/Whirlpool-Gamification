@@ -1,68 +1,75 @@
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
+using Newtonsoft.Json;
 
 public class TriviaDebugging : MonoBehaviour
 {
-    //-----------------------------------
     public TextMeshProUGUI questionText;
     public TextMeshProUGUI answer1Text;
     public TextMeshProUGUI answer2Text;
     public TextMeshProUGUI answer3Text;
+    public TextMeshProUGUI feedbackText;
+
+    public string apiUrl = "https://10.14.255.40:8002/api/debuggingrace/preguntas";
+
+    private List<PreguntaAPI> preguntas = new List<PreguntaAPI>();
 
     private int currentQuestion = 0;
     private int correctAnswer = 0;
-
-    //-------------------------------
-    private string[] questions =
-    {
-        "Crea una descripción para una lavadora _____",
-        "Genera un anuncio para un refrigerador con ahorro de _____",
-        "Escribe un correo para explicar una garantía de _____",
-        "Crea una imagen de una cocina moderna con _____",
-        "Redacta instrucciones para usar una secadora de forma _____",
-        "Genera ideas para mejorar la experiencia del _____",
-        "Crea un prompt para comparar dos modelos de _____",
-        "Escribe una respuesta amable para un cliente _____",
-        "Diseña una campaña para electrodomésticos _____",
-        "Crea una guía rápida para limpiar un _____"
-    };
-
-    private string[,] answers =
-    {
-        { "ayer", "eficiente", "azulmente" },
-        { "zapato", "energía", "rápido" },
-        { "producto", "nube", "correr" },
-        { "lunes", "hambre", "electrodomésticos" },
-        { "mesa", "segura", "cinco" },
-        { "cliente", "teclado", "océano" },
-        { "verde", "lavadoras", "saltando" },
-        { "triángulo", "kilómetro", "molesto" },
-        { "sustentables", "perro", "234" },
-        { "mañana", "horno", "ruido" }
-    };
-
-    private int[] correctAnswers =
-    {
-        1, // eficiente
-        1, // energia
-        0, // producto
-        2, // electrodomesticos
-        1, // segura
-        0, // cliente
-        1, // lavadoras
-        2, // molesto
-        0, // sustentables
-        1  // horno
-    };
+    private bool canAnswer = false;
 
     void Start()
     {
-        ShowQuestion();
+        if (feedbackText != null)
+        {
+            feedbackText.text = "";
+        }
+
+        StartCoroutine(LoadQuestionsFromAPI());
     }
 
-    //--------------------------------------------
+    IEnumerator LoadQuestionsFromAPI()
+    {
+        questionText.text = "Cargando preguntas...";
+
+        UnityWebRequest web = UnityWebRequest.Get(apiUrl);
+        web.certificateHandler = new ForceAcceptAll();
+
+        yield return web.SendWebRequest();
+
+        if (web.result != UnityWebRequest.Result.Success)
+        {
+            questionText.text = "Error al cargar preguntas";
+            Debug.Log("Error API: " + web.error);
+        }
+        else
+        {
+            preguntas = JsonConvert.DeserializeObject<List<PreguntaAPI>>(web.downloadHandler.text);
+
+            if (preguntas == null || preguntas.Count == 0)
+            {
+                questionText.text = "No hay preguntas disponibles";
+            }
+            else
+            {
+                canAnswer = true;
+                ShowQuestion();
+            }
+        }
+    }
+
     public void SelectAnswer(int answerIndex)
     {
+        if (!canAnswer)
+        {
+            return;
+        }
+
+        canAnswer = false;
+
         if (answerIndex == correctAnswer)
         {
             if (SFXManagerDebugging.Instance != null)
@@ -71,31 +78,79 @@ public class TriviaDebugging : MonoBehaviour
             }
 
             GameControlDebugging.Instance.CorrectAnswer();
+
+            if (feedbackText != null)
+            {
+                feedbackText.color = Color.green;
+                feedbackText.text = "Correcto: recibiste boost";
+            }
         }
         else
         {
             GameControlDebugging.Instance.WrongAnswer();
+
+            if (feedbackText != null)
+            {
+                feedbackText.color = Color.red;
+                feedbackText.text = "Incorrecto: la CPU recibió boost";
+            }
         }
+
+        StartCoroutine(NextQuestionAfterFeedback());
+    }
+
+    IEnumerator NextQuestionAfterFeedback()
+    {
+        yield return new WaitForSeconds(1f);
 
         currentQuestion++;
 
-        if (currentQuestion >= questions.Length)
+        if (currentQuestion >= preguntas.Count)
         {
             currentQuestion = 0;
         }
 
         ShowQuestion();
+
+        if (feedbackText != null)
+        {
+            feedbackText.text = "";
+        }
+
+        canAnswer = true;
     }
 
-    //-----------------------------------------------
     void ShowQuestion()
     {
-        questionText.text = questions[currentQuestion];
+        PreguntaAPI preguntaActual = preguntas[currentQuestion];
 
-        answer1Text.text = answers[currentQuestion, 0];
-        answer2Text.text = answers[currentQuestion, 1];
-        answer3Text.text = answers[currentQuestion, 2];
+        questionText.text = preguntaActual.prompt;
 
-        correctAnswer = correctAnswers[currentQuestion];
+        answer1Text.text = "";
+        answer2Text.text = "";
+        answer3Text.text = "";
+
+        correctAnswer = 0;
+
+        for (int i = 0; i < preguntaActual.respuestas.Count; i++)
+        {
+            if (i == 0)
+            {
+                answer1Text.text = preguntaActual.respuestas[i].texto;
+            }
+            else if (i == 1)
+            {
+                answer2Text.text = preguntaActual.respuestas[i].texto;
+            }
+            else if (i == 2)
+            {
+                answer3Text.text = preguntaActual.respuestas[i].texto;
+            }
+
+            if (preguntaActual.respuestas[i].correcta)
+            {
+                correctAnswer = i;
+            }
+        }
     }
 }
