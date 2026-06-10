@@ -47,6 +47,20 @@ public class DropAnswerTracker : MonoBehaviour
         roundAlreadyCounted = false;
     }
 
+    public void RecordRoundComplete()
+    {
+        if (roundAlreadyCounted)
+        {
+            return;
+        }
+
+        correctSetsCompleted++;
+        roundAlreadyCounted = true;
+        SaveProgress();
+        onCorrectSetsChanged?.Invoke(correctSetsCompleted);
+        RoundCompleted?.Invoke();
+    }
+
     public void ResetTracker()
     {
         correctSetsCompleted = 0;

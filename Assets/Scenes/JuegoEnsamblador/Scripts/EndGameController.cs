@@ -14,7 +14,7 @@ public class EndGameController : MonoBehaviour
         int correctSets = PlayerPrefs.GetInt(DropAnswerTracker.CorrectSetsKey, 0);
         int minutes = elapsedSeconds / 60;
         int seconds = elapsedSeconds % 60;
-        int score = (elapsedSeconds * 100) + (correctSets*100);
+        int Kilometros = (elapsedSeconds) + (correctSets);
 
         if (timeIngameText != null)
         {
@@ -28,7 +28,7 @@ public class EndGameController : MonoBehaviour
 
         if (scoreText != null)
         {
-            scoreText.text = score.ToString();
+            scoreText.text = Kilometros.ToString();
         }
         
     }

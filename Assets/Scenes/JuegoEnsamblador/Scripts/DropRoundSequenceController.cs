@@ -29,6 +29,25 @@ public class DropRoundSequenceController : MonoBehaviour
     {
         if (answerTracker == null)
             answerTracker = FindObjectOfType<DropAnswerTracker>();
+
+        DisableLegacyDropEvents();
+    }
+
+    private void DisableLegacyDropEvents()
+    {
+        foreach (var box in dropBoxes)
+        {
+            if (box != null)
+                box.onDropped.RemoveAllListeners();
+        }
+
+        draggableSpawner0?.DisableAutoSpawn();
+        draggableSpawner1?.DisableAutoSpawn();
+        draggableSpawner2?.DisableAutoSpawn();
+
+        draggableSpawner0?.SetApiControlled(true);
+        draggableSpawner1?.SetApiControlled(true);
+        draggableSpawner2?.SetApiControlled(true);
     }
 
     private void OnEnable()
@@ -100,6 +119,9 @@ public class DropRoundSequenceController : MonoBehaviour
         }
 
         Debug.Log("Respuestas cargadas: " + answers.Length);
+        LogAnswerGroup("Rol", answers, 0, 4);
+        LogAnswerGroup("Contexto", answers, 4, 4);
+        LogAnswerGroup("Tarea", answers, 8, 4);
 
         foreach (var box in dropBoxes)
         {
@@ -122,6 +144,8 @@ public class DropRoundSequenceController : MonoBehaviour
 
         answerTracker?.BeginNewRound();
 
+        draggableSpawner1?.SpawnApiOptions(null);
+        draggableSpawner2?.SpawnApiOptions(null);
         draggableSpawner0.SpawnApiOptions(rol);
     }
 
@@ -135,6 +159,7 @@ public class DropRoundSequenceController : MonoBehaviour
 
         if (filledBoxCount == 1)
         {
+            Debug.Log("Spawneando opciones de Contexto");
             draggableSpawner1.SpawnApiOptions(
                 contextoOptions);
         }
@@ -145,18 +170,28 @@ public class DropRoundSequenceController : MonoBehaviour
         }
         else if (filledBoxCount >= 3)
         {
+            answerTracker?.RecordRoundComplete();
             PromptCompleted();
+        }
+    }
+
+    private static void LogAnswerGroup(string label, ApiAnswer[] answers, int start, int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            ApiAnswer answer = answers[start + i];
+            Debug.Log(
+                label + " [" + i + "]: "
+                + answer.texto + " | correcta=" + answer.correcta);
         }
     }
 
     private void PromptCompleted()
     {
-    Debug.Log("Prompt completado");
+        Debug.Log("Prompt completado correctamente");
 
-    answerTracker?.NotifyDropChanged();
+        promptId = promptIds[Random.Range(0, promptIds.Length)];
 
-    promptId = promptIds[Random.Range(0, promptIds.Length)];
-
-    StartCoroutine(LoadPromptFromApi());
+        StartCoroutine(LoadPromptFromApi());
     }
 }

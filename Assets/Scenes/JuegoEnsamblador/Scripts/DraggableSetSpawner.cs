@@ -13,6 +13,17 @@ public class DraggableSetSpawner : MonoBehaviour
 
     [SerializeField] private bool avoidDuplicatesInSet = true;
     [SerializeField] private bool spawnOnStart = false;
+    private bool apiControlled;
+
+    public void DisableAutoSpawn()
+    {
+        spawnOnStart = false;
+    }
+
+    public void SetApiControlled(bool enabled)
+    {
+        apiControlled = enabled;
+    }
 
     private void Awake()
     {
@@ -32,6 +43,11 @@ public class DraggableSetSpawner : MonoBehaviour
 
     public void SpawnNextSet()
     {
+        if (apiControlled)
+        {
+            return;
+        }
+
         ClearExistingDraggables();
         SpawnSet();
     }
@@ -75,7 +91,8 @@ public class DraggableSetSpawner : MonoBehaviour
 
         drag.Setup(
             answers[i].texto,
-            answers[i].correcta
+            answers[i].correcta,
+            draggableTemplate != null ? draggableTemplate.choiceTag : null
         );
         }
     }
